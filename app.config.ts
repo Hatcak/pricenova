@@ -120,7 +120,7 @@ export const appConfig: AppConfig = {
       tr: "PriceNova rakiplerinin fiyatlarını günde binlerce kez tarar, sen düşük kaldığında uyarır ve kuralların doğrultusunda otomatik yeniden fiyatlandırarak marjını korur — sen başka işlerle ilgilenirken.",
       en: "PriceNova scans your competitors thousands of times a day, alerts you the moment you're undercut, and auto-reprices within your rules to protect your margin — while you focus on everything else.",
     },
-    heroCtaPrimary: { tr: "Ücretsiz başla", en: "Start free" },
+    heroCtaPrimary: { tr: "Hemen başla", en: "Get started" },
     heroCtaSecondary: { tr: "Canlı demoyu gör", en: "See the live demo" },
     features: [
       { icon: "radar", title: { tr: "Rakip takibi", en: "Competitor tracking" }, body: { tr: "Her ürünün için rakip URL'lerini eşleştir; fiyat, stok ve kargo durumunu günde binlerce kez tara.", en: "Match competitor URLs to each product and scan price, stock and shipping thousands of times a day." } },
@@ -138,8 +138,8 @@ export const appConfig: AppConfig = {
     ],
     pricing: [
       { name: "Starter", price: "$49", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "Başla", en: "Get started" } },
-      { name: "Growth", price: "$149", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "Ücretsiz dene", en: "Start free trial" }, featured: true },
-      { name: "Scale", price: "Custom", tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada tarama & API", en: "Per-minute scans & API" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], cta: { tr: "Satışa ulaş", en: "Contact sales" } },
+      { name: "Growth", price: "$149", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "Başla", en: "Get started" }, featured: true },
+      { name: "Scale", price: "$259", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada tarama & API", en: "Per-minute scans & API" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], cta: { tr: "Başla", en: "Get started" } },
     ],
     faq: [
       { q: { tr: "Rakip fiyatlarını nasıl topluyorsunuz?", en: "How do you collect competitor prices?" }, a: { tr: "Her ürün için eşlediğin rakip URL'lerini düzenli aralıklarla tarar; fiyat, stok ve kargo bilgisini çıkarırız. Pazaryeri API'leri olanlar için doğrudan onları kullanırız.", en: "We scan the competitor URLs you match to each product at regular intervals, extracting price, stock and shipping. Where marketplace APIs exist, we use them directly." } },

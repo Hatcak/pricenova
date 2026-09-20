@@ -180,7 +180,7 @@ export default function LandingPage() {
     apiTitle: { tr: "Geliştiriciler için kuruldu", en: "Built for developers" } as L,
     apiSub: { tr: "Temiz bir REST API, imzalı webhook'lar ve örnek-temelli dokümanlar — kendi akışını kur.", en: "A clean REST API, signed webhooks, and example-first docs — wire your own pipeline." } as L,
     pricingTitle: { tr: "Ürün sayısına göre basit fiyatlandırma", en: "Simple pricing by product count" } as L,
-    pricingSub: { tr: "Ücretsiz dene. Sadece izlediğin ürünler için öde.", en: "Start free. Pay only for the products you track." } as L,
+    pricingSub: { tr: "Sadece izlediğin ürünler için öde.", en: "Pay only for the products you track." } as L,
     popular: { tr: "En popüler", en: "Most popular" } as L,
     faqTitle: { tr: "Sıkça sorulanlar", en: "Frequently asked" } as L,
     faqSub: { tr: "Cevabını bulamadın mı? Ekibimize yaz.", en: "Can't find an answer? Reach our team." } as L,
