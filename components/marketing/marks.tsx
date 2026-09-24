@@ -79,7 +79,7 @@ export function ProductPreview() {
         {rows.map((r, i) => (
           <div
             key={r.name}
-            className={`grid grid-cols-[1.5fr_auto_auto] items-center gap-2 px-3 py-2.5 ${i === 0 ? "bg-primary/[0.04]" : ""} ${i < rows.length - 1 ? "border-b border-border/60" : ""}`}
+            className={`grid grid-cols-[1.5fr_auto_auto] items-center gap-2 px-3 py-2.5 ${i === 0 ? "bg-primary/4" : ""} ${i < rows.length - 1 ? "border-b border-border/60" : ""}`}
           >
             <div className="flex items-center gap-2">
               <Sparkline

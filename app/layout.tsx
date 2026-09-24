@@ -47,6 +47,12 @@ export default function RootLayout({
     <html
       lang={DEFAULT_LANG}
       suppressHydrationWarning
+      /**
+       * globals.css sets `scroll-behavior: smooth` for the anchor links on the
+       * marketing page. Next needs this attribute to know that's deliberate,
+       * otherwise it warns and route changes animate their scroll reset too.
+       */
+      data-scroll-behavior="smooth"
       className={`${sans.variable} ${display.variable} ${mono.variable} h-full`}
     >
       <body className="min-h-full bg-background text-foreground antialiased font-sans">

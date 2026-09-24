@@ -33,7 +33,7 @@ export default function MatchesPage() {
   const colorOf = (id: string) => competitors.find((c) => c.id === id)?.color ?? "var(--color-muted)";
 
   return (
-    <div className="mx-auto max-w-[1000px] animate-fade-in space-y-6">
+    <div className="mx-auto max-w-250 animate-fade-in space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold tracking-tight">
           {lang === "tr" ? "Rakip eşleşmeleri" : "Competitor matches"}

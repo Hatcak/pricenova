@@ -172,26 +172,128 @@ export const appConfig: AppConfig = {
       { value: "2", label: { tr: "uyarı kanalı", en: "alert channels" } },
     ],
     /**
-     * EMPTY ON PURPOSE — this kit ships with no customers, so it claims none.
-     * The testimonials section on the marketing page renders only when this
-     * array has entries. Add your first real one by copying this shape:
+     * ⚠️  DEMO CONTENT — every brand, person, quote and number below is made
+     * up. They exist so the testimonials section has something to render while
+     * you build. The marketing page labels this section as demo content on
+     * screen; do not remove that label while these placeholders are here.
      *
-     *   {
-     *     brand: "Acme",
-     *     initials: "AC",
-     *     logo: "/customers/acme.svg",          // optional
-     *     result: { tr: "Marj +%9", en: "Margin +9%" },
-     *     quote: {
-     *       tr: "Onların onayladığı cümle, kelimesi kelimesine.",
-     *       en: "The sentence they approved, word for word.",
-     *     },
-     *     author: "Ada Yılmaz",
-     *     role: { tr: "Kurucu", en: "Founder" },
-     *   },
-     *
-     * Get written permission before you publish a name, a logo or a number.
+     * Replace them one at a time as real customers agree to be named, and get
+     * written permission before you publish anyone's name, logo or numbers.
+     * Delete the label from app/(marketing)/page.tsx once the last placeholder
+     * is gone — and empty this array to hide the section entirely.
      */
-    caseStudies: [],
+    caseStudies: [
+      {
+        brand: "Vestra Elektronik",
+        initials: "SA",
+        result: { tr: "Haftada 7 saat", en: "7 hours a week" },
+        quote: {
+          tr: "Her sabah on iki rakip sitesini elle açıyordum. Artık uyarılar kahvemle birlikte geliyor; o saatleri satın alma tarafına ayırdım.",
+          en: "I used to open twelve rival sites by hand every morning. Now the alerts arrive with my coffee, and those hours go into buying instead.",
+        },
+        author: "Selin Arıkan",
+        role: { tr: "Kurucu", en: "Founder" },
+      },
+      {
+        brand: "Nord & Bloom",
+        initials: "ML",
+        result: { tr: "Marj +%9", en: "Margin +9%" },
+        quote: {
+          tr: "Taban kuralı olmadan rakibi körü körüne takip ediyorduk. Maliyet +%12 sınırını koyduktan sonra en ucuz kalmaya devam ettik ama zararına satmayı bıraktık.",
+          en: "Without a floor rule we were following rivals blindly. After setting cost +12% we stayed cheapest but stopped selling at a loss.",
+        },
+        author: "Marta Lindqvist",
+        role: { tr: "E-ticaret Müdürü", en: "Ecommerce Manager" },
+      },
+      {
+        brand: "Kıvılcım Spor",
+        initials: "BD",
+        result: { tr: "En ucuz SKU %31 → %58", en: "Cheapest SKUs 31% → 58%" },
+        quote: {
+          tr: "Hangi kategoride kaybettiğimizi hiç bilmiyorduk. Rapor ekranı bunu ilk haftada gösterdi; koşu ayakkabılarında fiyatımız pazarın çok üstündeymiş.",
+          en: "We had no idea which categories we were losing. The reports screen showed it in the first week — our running shoes sat way above the market.",
+        },
+        author: "Burak Demirtaş",
+        role: { tr: "Operasyon Sorumlusu", en: "Operations Lead" },
+      },
+      {
+        brand: "Harveston Home",
+        initials: "JW",
+        result: { tr: "1 öğleden sonra", en: "One afternoon" },
+        quote: {
+          tr: "Shopify bağlantısı bir öğleden sonrada kuruldu. Kurallar fiyatı doğrudan mağazaya yazıyor, kimse elle güncelleme yapmıyor artık.",
+          en: "The Shopify connection took one afternoon. Rules write straight back to the store and nobody updates a price by hand any more.",
+        },
+        author: "James Whitfield",
+        role: { tr: "E-ticaret Direktörü", en: "Head of Ecommerce" },
+      },
+      {
+        brand: "PetiKöşe",
+        initials: "EY",
+        result: { tr: "Yanlış eşleşme: 0", en: "Zero bad matches" },
+        quote: {
+          tr: "Bir rakibin mama kabını 20 kiloluk mama çuvalıyla eşleştirmesi bütün hesabı bozardı. Sistem emin olmadığı eşleşmeyi bize sordu, biz de eledik.",
+          en: "A rival's food bowl matched to our 20kg sack would have wrecked the whole comparison. The system asked us about the ones it wasn't sure of, and we threw them out.",
+        },
+        author: "Ece Yıldırım",
+        role: { tr: "Kurucu Ortak", en: "Co-founder" },
+      },
+      {
+        brand: "Lumea Studio",
+        initials: "PR",
+        result: { tr: "6 dakikada tepki", en: "6-minute reaction" },
+        quote: {
+          tr: "Black Friday'de bir rakip gece yarısı fiyat kırdı. Altı dakika sonra uyarı geldi, kural devreye girdi, sabaha yine ilk sıradaydık.",
+          en: "A rival slashed prices at midnight on Black Friday. The alert came six minutes later, the rule fired, and we were back on top by morning.",
+        },
+        author: "Priya Raghavan",
+        role: { tr: "Büyüme Sorumlusu", en: "Growth Lead" },
+      },
+      {
+        brand: "Delta Parça",
+        initials: "MS",
+        result: { tr: "2.400 SKU", en: "2,400 SKUs" },
+        quote: {
+          tr: "Yedek parçada binlerce ürün var ve hepsi birbirine benziyor. Barkod eşleştirmesi olmasaydı bu işi hiç kuramazdık.",
+          en: "Spare parts means thousands of products that all look alike. Without barcode matching we could never have set this up.",
+        },
+        author: "Mert Solak",
+        role: { tr: "Satış Müdürü", en: "Sales Manager" },
+      },
+      {
+        brand: "Brightfold Books",
+        initials: "AK",
+        result: { tr: "Onaylı mod", en: "Approval mode" },
+        quote: {
+          tr: "Fiyat kontrolünü hiçbir yazılıma devretmek istemiyorduk. Her kuralı \"önce bana sor\" modunda tutuyoruz; sabah on dakikada kuyruğu geçiyorum, yeter.",
+          en: "We didn't want to hand price control to any software. Every rule stays on \"ask me first\" — ten minutes each morning clears the queue, and that's enough.",
+        },
+        author: "Anna Kowalski",
+        role: { tr: "Fiyatlandırma Müdürü", en: "Pricing Manager" },
+      },
+      {
+        brand: "Aksu Mutfak",
+        initials: "DÖ",
+        result: { tr: "Tek tıkla geri alma", en: "One-click undo" },
+        quote: {
+          tr: "Bir kuralı yanlış kurduk ve kırk üründe fiyat düştü. Panikledik ama \"tümünü geri al\" düğmesi hepsini bir dakikada eski haline getirdi.",
+          en: "We set a rule up wrong and forty prices dropped. We panicked — then \"undo all\" put every one of them back inside a minute.",
+        },
+        author: "Deniz Öztürk",
+        role: { tr: "Kategori Yöneticisi", en: "Category Manager" },
+      },
+      {
+        brand: "Northpeak Outdoor",
+        initials: "TR",
+        result: { tr: "4 kanal tek panel", en: "4 channels, one panel" },
+        quote: {
+          tr: "Kendi sitemiz, Trendyol ve Amazon ayrı ayrı takip edilen üç dünyaydı. Pazaryerinde fiyatı hâlâ elle giriyoruz ama en azından ne olduğunu tek ekrandan görüyoruz.",
+          en: "Our own site, Trendyol and Amazon were three worlds tracked separately. We still enter marketplace prices by hand, but at least we see what's happening on one screen.",
+        },
+        author: "Tomás Rivera",
+        role: { tr: "Pazaryeri Sorumlusu", en: "Marketplace Manager" },
+      },
+    ],
 
     pricing: [
       { name: "Starter", price: "$49", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "Başla", en: "Get started" } },

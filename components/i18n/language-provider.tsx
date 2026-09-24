@@ -6,10 +6,62 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
 } from "react";
 import { DEFAULT_LANG, type Lang, type L, pick } from "@/lib/i18n/config";
 import { ui, type UIDict } from "@/lib/i18n/dict";
+
+/**
+ * The remembered language lives in a tiny external store rather than in state
+ * copied out of localStorage by an effect.
+ *
+ * The server can't see localStorage, so the first paint has to be
+ * DEFAULT_LANG either way. useSyncExternalStore is built for exactly that:
+ * React hydrates with `getServerSnapshot`, then immediately re-renders with
+ * the real value — no cascading render, no hydration warning, and no visible
+ * flash of the wrong language.
+ */
+const STORAGE_KEY = "lang";
+const listeners = new Set<() => void>();
+
+/** Cached so getSnapshot stays cheap and returns a stable value. */
+let cached: Lang | null = null;
+
+function readStored(): Lang {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved === "tr" || saved === "en" ? saved : DEFAULT_LANG;
+  } catch {
+    return DEFAULT_LANG; // private mode or blocked storage
+  }
+}
+
+function subscribe(onChange: () => void) {
+  listeners.add(onChange);
+  return () => {
+    listeners.delete(onChange);
+  };
+}
+
+function getSnapshot(): Lang {
+  if (cached === null) cached = readStored();
+  return cached;
+}
+
+function getServerSnapshot(): Lang {
+  return DEFAULT_LANG;
+}
+
+function writeLang(next: Lang) {
+  cached = next;
+  try {
+    localStorage.setItem(STORAGE_KEY, next);
+  } catch {
+    /* the choice just won't survive a reload */
+  }
+  document.documentElement.lang = next;
+  for (const fn of listeners) fn();
+}
 
 interface LangContextValue {
   lang: Lang;
@@ -24,18 +76,14 @@ interface LangContextValue {
 const LangContext = createContext<LangContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(DEFAULT_LANG);
+  const lang = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
+  /** Keep <html lang> honest for screen readers and translation tools. */
   useEffect(() => {
-    const saved = localStorage.getItem("lang");
-    if (saved === "tr" || saved === "en") setLangState(saved);
-  }, []);
+    document.documentElement.lang = lang;
+  }, [lang]);
 
-  const setLang = useCallback((l: Lang) => {
-    setLangState(l);
-    localStorage.setItem("lang", l);
-    document.documentElement.lang = l;
-  }, []);
+  const setLang = useCallback((l: Lang) => writeLang(l), []);
 
   const toggle = useCallback(
     () => setLang(lang === "tr" ? "en" : "tr"),

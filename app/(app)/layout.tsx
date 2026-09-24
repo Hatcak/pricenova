@@ -23,7 +23,7 @@ export default async function AppLayout({
         <div className="relative flex flex-1 flex-col overflow-hidden">
           {/* faint sky wash at the very top of the app */}
           <div
-            className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-64"
+            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-64"
             style={{ background: "var(--grad-cloud)" }}
             aria-hidden
           />

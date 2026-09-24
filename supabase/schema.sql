@@ -64,13 +64,30 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
--- ── Workspace settings (holds the global stop) ───────────────────────────────
+-- ── Workspace settings (the Settings screen writes here) ─────────────────────
 create table if not exists public.workspace_settings (
   user_id    uuid primary key references auth.users on delete cascade,
   -- false = the emergency stop is engaged; no rule may write a price
   autopilot  boolean not null default true,
   updated_at timestamptz not null default now()
 );
+
+-- Added after the first release. `add column if not exists` means you can
+-- safely paste this whole file again to pick them up.
+alter table public.workspace_settings
+  -- Pricing defaults applied to newly created rules
+  add column if not exists default_rule_mode   rule_mode     not null default 'approval',
+  add column if not exists floor_margin_pct    numeric(5,2)  not null default 10,
+  add column if not exists max_daily_changes   integer       not null default 50,
+  -- Where alerts go
+  add column if not exists notify_email        boolean       not null default true,
+  add column if not exists notify_slack        boolean       not null default false,
+  -- What counts as worth telling you about
+  add column if not exists notify_drop_pct     numeric(5,2)  not null default 1,
+  add column if not exists notify_lost_lead    boolean       not null default true,
+  add column if not exists notify_stock_out    boolean       not null default true,
+  -- 'off' | 'daily' | 'weekly'
+  add column if not exists digest_frequency    text          not null default 'weekly';
 
 -- ── Competitors ──────────────────────────────────────────────────────────────
 create table if not exists public.competitors (

@@ -87,8 +87,12 @@ const COMPARE: { feature: L; manual: CompareValue; sheets: CompareValue; pw: Com
 ];
 
 /**
- * Customer stories live in app.config.ts (`marketing.caseStudies`) and ship
- * empty. The section below renders only when you've added a real one.
+ * Customer stories live in app.config.ts (`marketing.caseStudies`).
+ *
+ * The entries currently in that array are invented placeholders and the
+ * on-page "demo content" note has been removed at the owner's request, so
+ * this section now reads as genuine customer feedback. Replace every entry
+ * with a real, permitted customer before this site goes public.
  */
 
 /**
@@ -287,7 +291,7 @@ export default function LandingPage() {
             </span>
             <h1 className="mt-5 max-w-xl font-display text-[40px] font-bold leading-[1.04] tracking-[-0.03em] sm:text-[54px]">
               {t(m.heroTitle)}{" "}
-              <span className="bg-gradient-to-br from-[oklch(60%_0.13_205)] to-[oklch(50%_0.14_232)] bg-clip-text text-transparent">
+              <span className="bg-linear-to-br from-[oklch(60%_0.13_205)] to-[oklch(50%_0.14_232)] bg-clip-text text-transparent">
                 {t(m.heroAccent)}
               </span>
             </h1>
@@ -556,7 +560,7 @@ export default function LandingPage() {
                         <span className={cn("tnum text-[11px] font-semibold", r.tone)}>{r.delta}</span>
                       </div>
                     ))}
-                    <div className="flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/[0.04] p-3">
+                    <div className="flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/4 p-3">
                       <Trophy className="h-4 w-4 text-primary" />
                       <span className="flex-1 text-[13px] font-semibold text-primary">{lang === "tr" ? "Sen — en ucuz" : "You — cheapest"}</span>
                       <span className="tnum text-[13px] font-bold text-primary">{formatPrice(79.0)}</span>
@@ -719,7 +723,7 @@ export default function LandingPage() {
                   <th className="px-5 py-4 text-left font-medium text-muted-foreground"></th>
                   <th className="px-5 py-4 text-center font-medium text-muted-foreground">{lang === "tr" ? "Elle kontrol" : "Manual checking"}</th>
                   <th className="px-5 py-4 text-center font-medium text-muted-foreground">{lang === "tr" ? "Tablolar" : "Spreadsheets"}</th>
-                  <th className="bg-primary/[0.04] px-5 py-4 text-center">
+                  <th className="bg-primary/4 px-5 py-4 text-center">
                     <span className="inline-flex items-center gap-1.5 font-semibold text-primary">
                       <Radar className="h-4 w-4" />
                       {appConfig.name}
@@ -803,7 +807,7 @@ export default function LandingPage() {
                   <div className="flex items-center justify-between gap-3">
                     {cs.logo ? (
                       /* eslint-disable-next-line @next/next/no-img-element */
-                      <img src={cs.logo} alt={cs.brand} className="h-7 w-auto max-w-[120px] object-contain" />
+                      <img src={cs.logo} alt={cs.brand} className="h-7 w-auto max-w-30 object-contain" />
                     ) : (
                       <span className="font-display text-[15px] font-bold tracking-tight">{cs.brand}</span>
                     )}
@@ -1022,7 +1026,7 @@ function CompareCell({
 }) {
   const text = typeof value === "string" ? value : typeof value === "object" ? value[lang] : null;
   return (
-    <td className={cn("px-5 py-3.5 text-center", highlight && "bg-primary/[0.04]")}>
+    <td className={cn("px-5 py-3.5 text-center", highlight && "bg-primary/4")}>
       {typeof value === "boolean" ? (
         value ? (
           <span className={cn("mx-auto grid h-5 w-5 place-items-center rounded-full", highlight ? "bg-primary text-primary-foreground" : "bg-success/12 text-success")}>

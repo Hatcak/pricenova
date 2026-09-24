@@ -158,7 +158,7 @@ export default function DashboardPage() {
                         }}
                         className={cn(
                           "cursor-pointer border-b border-border/60 transition-colors last:border-0",
-                          isSel ? "bg-primary/[0.04]" : "hover:bg-muted/50",
+                          isSel ? "bg-primary/4" : "hover:bg-muted/50",
                         )}
                       >
                         <td className="py-3 pl-4">
@@ -561,7 +561,7 @@ function ProductDrawer({ product, onClose }: { product: ProductRow; onClose: () 
       </div>
 
       {/* footer: suggested reprice */}
-      <div className="rounded-xl border border-primary/30 bg-primary/[0.04] p-3">
+      <div className="rounded-xl border border-primary/30 bg-primary/4 p-3">
         <p className="text-[11px] font-medium text-muted-foreground">{lang === "tr" ? "Önerilen fiyat" : "Suggested price"}</p>
         <div className="mt-1 flex items-end justify-between gap-2">
           <p className="tnum text-lg font-bold text-primary">

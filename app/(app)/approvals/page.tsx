@@ -26,7 +26,7 @@ export default function ApprovalsPage() {
   const marginOf = (e: RepriceEvent, price: number) => Math.round(((price - e.cost) / price) * 100);
 
   return (
-    <div className="mx-auto max-w-[1000px] animate-fade-in space-y-6">
+    <div className="mx-auto max-w-250 animate-fade-in space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <div>
           <h1 className="font-display text-2xl font-bold tracking-tight">
