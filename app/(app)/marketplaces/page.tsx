@@ -94,8 +94,8 @@ export default function MarketplacesPage() {
             </p>
             <p className="mt-1 max-w-2xl text-[13.5px] leading-relaxed text-muted-foreground">
               {lang === "tr"
-                ? "Kendi mağazanda (Shopify, WooCommerce) kuralların fiyatı gerçekten değiştirebilir. Amazon ve Trendyol gibi pazaryerlerinde ise şu an yalnızca fiyatları okuyabiliyoruz — orada bir kural tetiklendiğinde fiyatı değiştirmez, sana uyarı gönderir ve öneriyi onay kuyruğuna bırakır."
-                : "On your own store (Shopify, WooCommerce) your rules really can change a price. On marketplaces like Amazon and Trendyol we can currently only read prices — a rule that fires there won't change anything, it alerts you and leaves the suggestion in your approval queue."}
+                ? "Kendi mağazanda (Shopify, WooCommerce) kuralların fiyatı gerçekten değiştirebilir. Amazon, Trendyol, Hepsiburada ve n11 gibi pazaryerlerinde ise şu an yalnızca fiyatları okuyabiliyoruz — orada bir kural tetiklendiğinde fiyatı değiştirmez, sana uyarı gönderir ve öneriyi onay kuyruğuna bırakır."
+                : "On your own store (Shopify, WooCommerce) your rules really can change a price. On marketplaces like Amazon, Trendyol, Hepsiburada and n11 we can currently only read prices — a rule that fires there won't change anything, it alerts you and leaves the suggestion in your approval queue."}
             </p>
             <Link
               href="/approvals"
@@ -178,7 +178,9 @@ function ChannelCard({
         <div className="mt-4 rounded-xl border border-dashed border-border p-3 text-center">
           <p className="text-[12px] text-muted-foreground">
             {isSoon
-              ? lang === "tr" ? "Bu entegrasyon henüz hazır değil." : "This integration isn't ready yet."
+              ? lang === "tr"
+                ? "Rakip fiyatları okunuyor. Kendi ilanlarını buradan içe aktarma henüz hazır değil — ürünlerini şimdilik elle ekleyebilirsin."
+                : "Rival prices are read already. Importing your own listings from here isn't ready yet — add those products by hand for now."
               : lang === "tr" ? "Henüz bağlanmadı — bağlayınca ürünlerin buraya düşer." : "Not connected yet — your products land here once it is."}
           </p>
         </div>
@@ -189,7 +191,7 @@ function ChannelCard({
         {m.lastSync && (
           <p className="tnum inline-flex items-center gap-1 text-[11px] text-muted-foreground">
             <Clock className="h-3 w-3" />
-            {lang === "tr" ? "son senkron" : "last sync"} {formatRelative(m.lastSync)}
+            {lang === "tr" ? "son senkron" : "last sync"} {formatRelative(m.lastSync, lang)}
           </p>
         )}
 

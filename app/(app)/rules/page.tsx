@@ -86,7 +86,7 @@ export default function RulesPage() {
                   </p>
                   <p className="mt-0.5 text-[11px] text-muted-foreground">
                     {rule.lastFired
-                      ? `${lang === "tr" ? "son tetiklenme" : "last fired"} ${formatRelative(rule.lastFired)}`
+                      ? `${lang === "tr" ? "son tetiklenme" : "last fired"} ${formatRelative(rule.lastFired, lang)}`
                       : lang === "tr" ? "henüz tetiklenmedi" : "not fired yet"}
                   </p>
                 </div>

@@ -81,7 +81,7 @@ export default function ApprovalsPage() {
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold leading-tight">{e.product}</p>
                     <p className="tnum text-[11.5px] text-muted-foreground">
-                      {e.sku} · {t(e.rule)} · {formatRelative(e.at)}
+                      {e.sku} · {t(e.rule)} · {formatRelative(e.at, lang)}
                     </p>
                     <p className="mt-2 max-w-xl text-[13px] leading-relaxed text-foreground/80">{t(e.reason)}</p>
                   </div>
@@ -165,7 +165,7 @@ export default function ApprovalsPage() {
                 <div className="min-w-0 flex-1">
                   <p className={cn("font-semibold leading-tight", isReverted && "text-muted-foreground")}>{e.product}</p>
                   <p className="tnum text-[11.5px] text-muted-foreground">
-                    {e.sku} · {t(e.rule)} · {formatRelative(e.at)}
+                    {e.sku} · {t(e.rule)} · {formatRelative(e.at, lang)}
                   </p>
                   <p className="mt-1.5 max-w-xl text-[12.5px] leading-relaxed text-muted-foreground">{t(e.reason)}</p>
                 </div>

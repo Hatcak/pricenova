@@ -85,6 +85,8 @@
   --color-comp-2: oklch(64% 0.15 60);
   --color-comp-3: oklch(62% 0.12 190);
   --color-comp-4: oklch(58% 0.14 152);
+  --color-comp-5: oklch(64% 0.17 45);
+  --color-comp-6: oklch(52% 0.13 255);
 
   /* Signature gradients — green → turquoise → purple. */
   --grad-brand: linear-gradient(140deg, oklch(65% 0.16 152) 0%, oklch(64% 0.13 190) 50%, oklch(56% 0.17 300) 100%);

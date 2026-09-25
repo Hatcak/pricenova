@@ -46,7 +46,7 @@ const HERO_BENEFITS: L[] = [
 ];
 
 /** Platforms this kit integrates with — real names, not invented customers. */
-const TRUSTED = ["Shopify", "WooCommerce", "Amazon", "Trendyol", "Slack", "Supabase"];
+const TRUSTED = ["Shopify", "WooCommerce", "Amazon", "Trendyol", "Hepsiburada", "n11", "Slack", "Supabase"];
 
 const HOW_STEPS: { n: string; icon: string; title: L; body: L }[] = [
   {
@@ -75,15 +75,105 @@ const HOW_STEPS: { n: string; icon: string; title: L; body: L }[] = [
   },
 ];
 
+/**
+ * Comparison table, grouped by the job being done. Every PriceNova value is a
+ * feature shown elsewhere on this page — keep it that way when editing.
+ * `true` = check, `false` = dash, text = a concrete answer (a check is added
+ * in front of it in the PriceNova column).
+ */
 type CompareValue = boolean | L | string;
-const COMPARE: { feature: L; manual: CompareValue; sheets: CompareValue; pw: CompareValue }[] = [
-  { feature: { tr: "Rakip fiyatlarını otomatik topla", en: "Auto-collect rival prices" }, manual: false, sheets: false, pw: true },
-  { feature: { tr: "Fiyat geçmişi", en: "Price history" }, manual: false, sheets: { tr: "Manuel", en: "Manual" }, pw: true },
-  { feature: { tr: "Düşük kalınca uyarı", en: "Undercut alerts" }, manual: false, sheets: false, pw: true },
-  { feature: { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, manual: false, sheets: false, pw: true },
-  { feature: { tr: "Pazaryeri senkronu", en: "Marketplace sync" }, manual: { tr: "Tek tek", en: "One by one" }, sheets: false, pw: true },
-  { feature: { tr: "Marj koruması (taban kuralı)", en: "Margin protection (floor rule)" }, manual: { tr: "Akılda", en: "In your head" }, sheets: { tr: "Formül", en: "A formula" }, pw: true },
-  { feature: { tr: "Haftalık çalışma süresi", en: "Hours / week to run" }, manual: "8–10h", sheets: "4–6h", pw: { tr: "~0", en: "~0" } },
+type CompareRow = { feature: L; hint: L; manual: CompareValue; sheets: CompareValue; pw: CompareValue };
+const COMPARE_GROUPS: { title: L; rows: CompareRow[] }[] = [
+  {
+    title: { tr: "Veriyi toplamak", en: "Collecting the data" },
+    rows: [
+      {
+        feature: { tr: "Rakip fiyatlarını toplama", en: "Collecting rival prices" },
+        hint: { tr: "Her rakip sayfası, her ürün için", en: "Every rival page, for every product" },
+        manual: { tr: "Sekme sekme", en: "Tab by tab" },
+        sheets: { tr: "Kopyala-yapıştır", en: "Copy-paste" },
+        pw: { tr: "Otomatik, dakikada bire kadar", en: "Automatic, up to every minute" },
+      },
+      {
+        feature: { tr: "Doğru ürünü eşleştirme", en: "Matching the right product" },
+        hint: { tr: "Aksesuar ya da farklı varyant karışmasın", en: "No accessories or wrong variants" },
+        manual: { tr: "Göz kararı", en: "By eye" },
+        sheets: { tr: "Göz kararı", en: "By eye" },
+        pw: { tr: "Barkod + model kodu", en: "Barcode + model code" },
+      },
+      {
+        feature: { tr: "Fiyat geçmişi", en: "Price history" },
+        hint: { tr: "Kim, ne zaman, ne kadar indirdi", en: "Who cut, when, and by how much" },
+        manual: false,
+        sheets: { tr: "Elle tutulursa", en: "If you log it" },
+        pw: { tr: "Grafikli", en: "Charted" },
+      },
+    ],
+  },
+  {
+    title: { tr: "Harekete geçmek", en: "Acting on it" },
+    rows: [
+      {
+        feature: { tr: "Ucuzluğu kaybedince uyarı", en: "Alert when you're undercut" },
+        hint: { tr: "Rakip indirim yaptığı an", en: "The moment a rival cuts" },
+        manual: false,
+        sheets: false,
+        pw: { tr: "E-posta + Slack", en: "Email + Slack" },
+      },
+      {
+        feature: { tr: "Otomatik yeniden fiyatlandırma", en: "Automatic repricing" },
+        hint: { tr: "Senin kurallarınla", en: "Within your rules" },
+        manual: false,
+        sheets: false,
+        pw: true,
+      },
+      {
+        feature: { tr: "Yeni fiyatı mağazaya yazma", en: "Writing the new price to your store" },
+        hint: { tr: "Panele girip tek tek güncellemeden", en: "Without editing prices one by one" },
+        manual: { tr: "Tek tek", en: "One by one" },
+        sheets: { tr: "Tek tek", en: "One by one" },
+        pw: { tr: "Shopify · WooCommerce", en: "Shopify · WooCommerce" },
+      },
+    ],
+  },
+  {
+    title: { tr: "Kontrolü elde tutmak", en: "Staying in control" },
+    rows: [
+      {
+        feature: { tr: "Marj koruması", en: "Margin protection" },
+        hint: { tr: "Zararına satışı engeller", en: "Stops you selling at a loss" },
+        manual: { tr: "Akılda", en: "In your head" },
+        sheets: { tr: "Formülle", en: "With a formula" },
+        pw: { tr: "Taban + tavan kuralı", en: "Floor + ceiling rule" },
+      },
+      {
+        feature: { tr: "Önce bana sor modu", en: "Ask-me-first mode" },
+        hint: { tr: "Değişiklik onayınla uygulanır", en: "Changes wait for your approval" },
+        manual: false,
+        sheets: false,
+        pw: true,
+      },
+      {
+        feature: { tr: "Hatalı değişikliği geri alma", en: "Undoing a bad change" },
+        hint: { tr: "Yanlış kural, yanlış fiyat", en: "Wrong rule, wrong price" },
+        manual: { tr: "Hatırlarsan", en: "If you remember" },
+        sheets: { tr: "Hatırlarsan", en: "If you remember" },
+        pw: { tr: "Tek tıkla", en: "One click" },
+      },
+    ],
+  },
+  {
+    title: { tr: "Harcanan zaman", en: "Time it takes" },
+    rows: [
+      {
+        feature: { tr: "Haftalık iş yükü", en: "Weekly workload" },
+        hint: { tr: "100 ürün, 5 rakip için tahmini", en: "Rough estimate, 100 products × 5 rivals" },
+        manual: { tr: "8–10 saat", en: "8–10 hours" },
+        sheets: { tr: "4–6 saat", en: "4–6 hours" },
+        pw: { tr: "Yalnızca onaylar", en: "Just approvals" },
+      },
+    ],
+  },
 ];
 
 /**
@@ -181,7 +271,7 @@ const SECURITY: { icon: typeof ShieldCheck; title: L; body: L }[] = [
 /* Who PriceNova is for — use-case cards. */
 const USE_CASES: { icon: string; title: L; body: L }[] = [
   { icon: "shopping-cart", title: { tr: "DTC markaları", en: "DTC brands" }, body: { tr: "Kendi mağazanda rakiplerinin önünde kal; marjını taban kurallarıyla koru.", en: "Stay ahead of rivals on your own store and protect margin with floor rules." } },
-  { icon: "store", title: { tr: "Pazaryeri satıcıları", en: "Marketplace sellers" }, body: { tr: "Amazon ve Trendyol'da Buy Box ve en-ucuz konumunu otomatik kovala.", en: "Chase the Buy Box and cheapest position on Amazon and Trendyol automatically." } },
+  { icon: "store", title: { tr: "Pazaryeri satıcıları", en: "Marketplace sellers" }, body: { tr: "Amazon, Trendyol, Hepsiburada ve n11'de Buy Box ve en-ucuz konumunu takip et.", en: "Track the Buy Box and cheapest position on Amazon, Trendyol, Hepsiburada and n11." } },
   { icon: "package", title: { tr: "Toptan & dağıtıcılar", en: "Wholesale & distributors" }, body: { tr: "Geniş kataloglarda fiyat erozyonunu yakala, segmentlere göre kural ver.", en: "Catch price erosion across large catalogs and set rules per segment." } },
   { icon: "line-chart", title: { tr: "Fiyatlandırma ekipleri", en: "Pricing teams" }, body: { tr: "Fiyat endeksi ve geçmişle veriye dayalı kararlar al; haftalık raporlar gelsin.", en: "Make data-driven calls with price index and history; get weekly reports." } },
 ];
@@ -258,13 +348,11 @@ export default function LandingPage() {
     integrationsTitle: { tr: "Sevdiğin araçlarla çalışır", en: "Works with the tools you love" } as L,
     integrationsSub: { tr: "Supabase, fiyat-verisi sağlayıcın, Shopify/WooCommerce ve Slack'i dakikalar içinde bağla.", en: "Wire Supabase, your price-data provider, Shopify/WooCommerce and Slack in minutes." } as L,
     compareTitle: { tr: "Neden PriceNova?", en: "Why PriceNova?" } as L,
-    compareSub: { tr: "Elle kontrol ve tablolarla karşılaştır.", en: "Compared to manual checking and spreadsheets." } as L,
+    compareSub: { tr: "Rakip fiyatını takip etmenin üç yolu, yan yana.", en: "Three ways to keep up with rival prices, side by side." } as L,
     securityTitle: { tr: "Gizli ve dürüst", en: "Private and fair" } as L,
     securitySub: { tr: "Yalnızca herkese açık fiyatları okuruz; verilerin sana özel kalır.", en: "We only read public prices; your data stays yours." } as L,
     testimonialsTitle: { tr: "Mağazalar PriceNova'ı seviyor", en: "Stores love PriceNova" } as L,
     testimonialsSub: { tr: "Fiyatla rekabet eden işletmelerden.", en: "From businesses competing on price." } as L,
-    apiTitle: { tr: "Geliştiriciler için kuruldu", en: "Built for developers" } as L,
-    apiSub: { tr: "Temiz bir REST API, imzalı webhook'lar ve örnek-temelli dokümanlar — kendi akışını kur.", en: "A clean REST API, signed webhooks, and example-first docs — wire your own pipeline." } as L,
     pricingTitle: { tr: "Ürün sayısına göre basit fiyatlandırma", en: "Simple pricing by product count" } as L,
     pricingSub: { tr: "Sadece izlediğin ürünler için öde.", en: "Pay only for the products you track." } as L,
     popular: { tr: "En popüler", en: "Most popular" } as L,
@@ -716,32 +804,94 @@ export default function LandingPage() {
           <p className="mt-3 text-muted-foreground">{tt(sectionCopy.compareSub)}</p>
         </div>
         <div className="mt-12 overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          {/* phones: one card per row so the PriceNova answer is never off-screen */}
+          <div className="sm:hidden">
+            {COMPARE_GROUPS.map((group) => (
+              <div key={tt(group.title)}>
+                <p className="label-mono border-b border-border/60 bg-muted/40 px-4 py-2 text-[10.5px] text-muted-foreground">{tt(group.title)}</p>
+                {group.rows.map((row) => (
+                  <div key={tt(row.feature)} className="border-b border-border/60 px-4 py-4">
+                    <p className="font-medium text-foreground">{tt(row.feature)}</p>
+                    <p className="mt-0.5 text-[12px] leading-snug text-muted-foreground">{tt(row.hint)}</p>
+                    <dl className="mt-3 grid grid-cols-[1fr_1fr_1.5fr] gap-2 text-center">
+                      <div className="rounded-lg bg-muted/40 px-1.5 py-2">
+                        <dt className="text-[10.5px] text-muted-foreground">{lang === "tr" ? "Elle" : "Manual"}</dt>
+                        <dd className="mt-1"><CompareMark value={row.manual} lang={lang} /></dd>
+                      </div>
+                      <div className="rounded-lg bg-muted/40 px-1.5 py-2">
+                        <dt className="text-[10.5px] text-muted-foreground">{lang === "tr" ? "Tablo" : "Sheets"}</dt>
+                        <dd className="mt-1"><CompareMark value={row.sheets} lang={lang} /></dd>
+                      </div>
+                      <div className="rounded-lg bg-primary/8 px-1.5 py-2 ring-1 ring-primary/20">
+                        <dt className="text-[10.5px] font-semibold text-primary">{appConfig.name}</dt>
+                        <dd className="mt-1"><CompareMark value={row.pw} lang={lang} highlight /></dd>
+                      </div>
+                    </dl>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto sm:block">
+            <table className="w-full min-w-[600px] text-sm">
+              <caption className="sr-only">{tt(sectionCopy.compareSub)}</caption>
               <thead>
                 <tr className="border-b border-border">
-                  <th className="px-5 py-4 text-left font-medium text-muted-foreground"></th>
-                  <th className="px-5 py-4 text-center font-medium text-muted-foreground">{lang === "tr" ? "Elle kontrol" : "Manual checking"}</th>
-                  <th className="px-5 py-4 text-center font-medium text-muted-foreground">{lang === "tr" ? "Tablolar" : "Spreadsheets"}</th>
-                  <th className="bg-primary/4 px-5 py-4 text-center">
+                  <th scope="col" className="sticky left-0 z-10 w-[34%] bg-card px-5 py-4 text-left">
+                    <span className="sr-only">{lang === "tr" ? "Özellik" : "Feature"}</span>
+                  </th>
+                  <th scope="col" className="w-[20%] px-4 py-4 text-center align-bottom">
+                    <span className="block font-semibold text-foreground">{lang === "tr" ? "Elle kontrol" : "Manual checking"}</span>
+                    <span className="mt-0.5 block text-[11.5px] font-normal text-muted-foreground">{lang === "tr" ? "Tarayıcı sekmeleri" : "Browser tabs"}</span>
+                  </th>
+                  <th scope="col" className="w-[20%] px-4 py-4 text-center align-bottom">
+                    <span className="block font-semibold text-foreground">{lang === "tr" ? "Tablolar" : "Spreadsheets"}</span>
+                    <span className="mt-0.5 block text-[11.5px] font-normal text-muted-foreground">Excel · Sheets</span>
+                  </th>
+                  <th scope="col" className="w-[26%] border-x border-t-2 border-x-primary/15 border-t-primary bg-primary/5 px-4 py-4 text-center align-bottom">
                     <span className="inline-flex items-center gap-1.5 font-semibold text-primary">
                       <Radar className="h-4 w-4" />
                       {appConfig.name}
                     </span>
+                    <span className="mt-0.5 block text-[11.5px] font-normal text-primary/70">{lang === "tr" ? "Otomatik" : "Automatic"}</span>
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                {COMPARE.map((row, i) => (
-                  <tr key={tt(row.feature)} className={cn("border-b border-border/60 last:border-0", i % 2 === 1 && "bg-muted/20")}>
-                    <td className="px-5 py-3.5 font-medium">{tt(row.feature)}</td>
-                    <CompareCell value={row.manual} lang={lang} />
-                    <CompareCell value={row.sheets} lang={lang} />
-                    <CompareCell value={row.pw} lang={lang} highlight />
+              {COMPARE_GROUPS.map((group) => (
+                <tbody key={tt(group.title)}>
+                  <tr className="border-b border-border/60 bg-muted/40">
+                    <th scope="colgroup" colSpan={3} className="sticky left-0 bg-muted/40 px-5 py-2 text-left">
+                      <span className="label-mono text-[10.5px] text-muted-foreground">{tt(group.title)}</span>
+                    </th>
+                    <td className="border-x border-x-primary/15 bg-primary/5" />
                   </tr>
-                ))}
-              </tbody>
+                  {group.rows.map((row) => (
+                    <tr key={tt(row.feature)} className="border-b border-border/60">
+                      <th scope="row" className="sticky left-0 z-10 bg-card px-5 py-3.5 text-left font-normal">
+                        <span className="block font-medium text-foreground">{tt(row.feature)}</span>
+                        <span className="mt-0.5 block text-[12px] leading-snug text-muted-foreground">{tt(row.hint)}</span>
+                      </th>
+                      <CompareCell value={row.manual} lang={lang} />
+                      <CompareCell value={row.sheets} lang={lang} />
+                      <CompareCell value={row.pw} lang={lang} highlight />
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
             </table>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border bg-muted/30 px-5 py-4">
+            <p className="text-[13.5px] text-muted-foreground">
+              {lang === "tr"
+                ? "Farkı en iyi örnek mağazada görürsün — kayıt gerekmez."
+                : "The difference is clearest in the sample store — no signup needed."}
+            </p>
+            <Link
+              href="/demo"
+              className="inline-flex h-10 shrink-0 items-center gap-2 rounded-lg bg-primary px-4 text-[13px] font-semibold text-primary-foreground shadow-pill transition-opacity hover:opacity-90"
+            >
+              {lang === "tr" ? "Demoyu aç" : "Open the demo"} <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -836,58 +986,6 @@ export default function LandingPage() {
           </div>
         </section>
       )}
-
-      {/* ── DEVELOPER / API ───────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <div className="grid items-center gap-10 lg:grid-cols-2">
-          <div>
-            <p className="label-mono text-primary">API</p>
-            <h2 className="mt-2 max-w-md font-display text-3xl font-bold tracking-tight sm:text-4xl">{tt(sectionCopy.apiTitle)}</h2>
-            <p className="mt-3 max-w-md text-muted-foreground">{tt(sectionCopy.apiSub)}</p>
-            <ul className="mt-6 space-y-2.5">
-              {[
-                { tr: "REST + imzalı webhook'lar", en: "REST + signed webhooks" },
-                { tr: "price.changed & position.lost olayları", en: "price.changed & position.lost events" },
-                { tr: "TypeScript & Python SDK'ları", en: "TypeScript & Python SDKs" },
-              ].map((p) => (
-                <li key={p.en} className="flex items-start gap-2.5 text-[15px]">
-                  <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
-                    <Check className="h-3 w-3" strokeWidth={3} />
-                  </span>
-                  {lang === "tr" ? p.tr : p.en}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* code preview card */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-[oklch(22%_0.02_235)] shadow-pop">
-            <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-3">
-              <span className="h-2.5 w-2.5 rounded-full bg-destructive/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
-              <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
-              <span className="ml-2 font-mono text-[11px] text-white/40">watch-product.ts</span>
-            </div>
-            <pre className="overflow-x-auto p-4 font-mono text-[12.5px] leading-relaxed text-white/80">
-{`const product = await pricenova.products.track({
-  sku: "AUD-EB-220",
-  yourPrice: 79.0,
-  cost: 41.0,
-  competitors: [
-    "megashop.com/aurora-earbuds",
-    "valuemart.io/p/aurora-pro",
-  ],
-  rule: "lowest - 1%",   // floor = cost +10%
-});
-
-// → pricenova scans, alerts, and on a rival
-//   drop, reprices you back to cheapest.
-pricenova.on("position.lost", (e) => {
-  reprice(e.sku, e.suggestedPrice);
-});`}
-            </pre>
-          </div>
-        </div>
-      </section>
 
       {/* ── PRICING ───────────────────────────────────────────────── */}
       <section id="pricing" className="mx-auto max-w-6xl px-5 py-20">
@@ -1024,22 +1122,46 @@ function CompareCell({
   lang: "tr" | "en";
   highlight?: boolean;
 }) {
+  return (
+    <td className={cn("px-4 py-3.5 text-center", highlight && "border-x border-x-primary/15 bg-primary/5")}>
+      <CompareMark value={value} lang={lang} highlight={highlight} />
+    </td>
+  );
+}
+
+/** The check / dash / text inside a comparison cell — shared by the table and the phone cards. */
+function CompareMark({
+  value,
+  lang,
+  highlight = false,
+}: {
+  value: boolean | L | string;
+  lang: "tr" | "en";
+  highlight?: boolean;
+}) {
   const text = typeof value === "string" ? value : typeof value === "object" ? value[lang] : null;
   return (
-    <td className={cn("px-5 py-3.5 text-center", highlight && "bg-primary/4")}>
+    <>
       {typeof value === "boolean" ? (
         value ? (
           <span className={cn("mx-auto grid h-5 w-5 place-items-center rounded-full", highlight ? "bg-primary text-primary-foreground" : "bg-success/12 text-success")}>
             <Check className="h-3 w-3" strokeWidth={3} />
+            <span className="sr-only">{lang === "tr" ? "Var" : "Yes"}</span>
           </span>
         ) : (
           <span className="mx-auto grid h-5 w-5 place-items-center rounded-full bg-muted text-muted-foreground">
             <Minus className="h-3 w-3" />
+            <span className="sr-only">{lang === "tr" ? "Yok" : "No"}</span>
           </span>
         )
+      ) : highlight ? (
+        <span className="inline-flex min-w-0 items-start gap-1.5 text-[13px] font-semibold leading-snug text-primary [overflow-wrap:anywhere]">
+          <Check className="mt-0.5 h-3.5 w-3.5 shrink-0" strokeWidth={3} />
+          {text}
+        </span>
       ) : (
-        <span className={cn("tnum text-[13px] font-medium", highlight ? "text-primary" : "text-muted-foreground")}>{text}</span>
+        <span className="text-[13px] leading-snug text-muted-foreground">{text}</span>
       )}
-    </td>
+    </>
   );
 }

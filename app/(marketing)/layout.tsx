@@ -86,6 +86,8 @@ export default function MarketingLayout({
                 links={[
                   { label: lang === "tr" ? "Rakip fiyat takip programı" : "Competitor price tracking", href: "/rakip-fiyat-takip-programi" },
                   { label: lang === "tr" ? "Trendyol fiyat takip sistemi" : "Trendyol price tracking", href: "/trendyol-fiyat-takip-sistemi" },
+                  { label: lang === "tr" ? "Hepsiburada fiyat takip" : "Hepsiburada price tracking", href: "/hepsiburada-fiyat-takip" },
+                  { label: lang === "tr" ? "n11 fiyat takip" : "n11 price tracking", href: "/n11-fiyat-takip" },
                   { label: lang === "tr" ? "Shopify otomatik fiyatlandırma" : "Shopify auto-repricing", href: "/shopify-otomatik-fiyatlandirma" },
                 ]}
               />

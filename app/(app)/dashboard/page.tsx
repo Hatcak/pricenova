@@ -367,7 +367,7 @@ export default function DashboardPage() {
                             {dropped ? <ArrowDown className="h-3 w-3" /> : <ArrowUp className="h-3 w-3" />}
                             {formatPrice(c.to)}
                           </span>
-                          <span className="ml-auto text-muted-foreground">{formatRelative(c.at)}</span>
+                          <span className="ml-auto text-muted-foreground">{formatRelative(c.at, lang)}</span>
                         </p>
                       </div>
                     </div>

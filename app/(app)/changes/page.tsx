@@ -37,7 +37,7 @@ export default function ChangesPage() {
                     <span className="text-muted-foreground">{lang === "tr" ? "fiyatını değiştirdi:" : "changed price on"}</span>{" "}
                     <span className="font-medium">{c.product}</span>
                   </p>
-                  <p className="text-[11px] text-muted-foreground">{formatRelative(c.at)}</p>
+                  <p className="text-[11px] text-muted-foreground">{formatRelative(c.at, lang)}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="tnum text-sm text-muted-foreground line-through">{formatPrice(c.from)}</span>

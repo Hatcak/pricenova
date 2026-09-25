@@ -49,8 +49,8 @@ const content: SeoLandingContent = {
     {
       title: { tr: "Önemli fark: Trendyol'da izleriz, fiyatı siz yazarsınız", en: "An important limit: we watch, you write" },
       body: {
-        tr: "Bunu baştan net söylemek gerekir. Kendi mağazanızda (Shopify, WooCommerce) kurallarınız fiyatı gerçekten değiştirebilir. Trendyol tarafında ise PriceNova şu an yalnızca fiyatları okur. Bir kural tetiklendiğinde fiyatı değiştirmez; size uyarı gönderir ve öneriyi onay kuyruğuna bırakır. Kararı siz verir, değişikliği Trendyol panelinden siz yaparsınız. Bunu \"yakında\" diye geçiştirmek yerine açıkça yazıyoruz, çünkü yanlış beklenti kurulan en büyük yerlerden biri burası.",
-        en: "This needs saying up front. On your own store (Shopify, WooCommerce) your rules really can change a price. On Trendyol, PriceNova currently only reads prices. When a rule fires it doesn't change anything — it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the Trendyol panel yourself. We'd rather write that plainly than hide it behind \"coming soon\", because it's one of the easiest places to set a false expectation.",
+        tr: "Bunu baştan net söylemek gerekir. Kendi mağazanızda (Shopify, WooCommerce) kurallarınız fiyatı gerçekten değiştirebilir. Trendyol tarafında ise PriceNova şu an yalnızca fiyatları okur. Bir kural tetiklendiğinde fiyatı değiştirmez; size uyarı gönderir ve öneriyi onay kuyruğuna bırakır. Kararı siz verir, değişikliği Trendyol panelinden siz yaparsınız.",
+        en: "This needs saying up front. On your own store (Shopify, WooCommerce) your rules really can change a price. On Trendyol, PriceNova currently only reads prices. When a rule fires it doesn't change anything — it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the Trendyol panel yourself.",
       },
     },
     {
@@ -99,9 +99,9 @@ const content: SeoLandingContent = {
     },
   ],
   related: [
+    { href: "/hepsiburada-fiyat-takip", label: { tr: "Hepsiburada fiyat takip", en: "Hepsiburada price tracking" } },
+    { href: "/n11-fiyat-takip", label: { tr: "n11 fiyat takip", en: "n11 price tracking" } },
     { href: "/rakip-fiyat-takip-programi", label: { tr: "Rakip fiyat takip programı", en: "Competitor price tracking" } },
-    { href: "/shopify-otomatik-fiyatlandirma", label: { tr: "Shopify otomatik fiyatlandırma", en: "Shopify auto-repricing" } },
-    { href: "/#faq", label: { tr: "Sıkça sorulanlar", en: "FAQ" } },
   ],
 };
 

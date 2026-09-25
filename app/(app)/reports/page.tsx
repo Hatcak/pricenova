@@ -305,7 +305,7 @@ export default function ReportsPage() {
                 </div>
                 <p className="mt-2 truncate text-[11px] text-muted-foreground">{r.recipients}</p>
                 <p className="tnum mt-0.5 text-[10.5px] text-muted-foreground">
-                  {lang === "tr" ? "son gönderim" : "last sent"} {formatRelative(r.lastRun)}
+                  {lang === "tr" ? "son gönderim" : "last sent"} {formatRelative(r.lastRun, lang)}
                 </p>
               </div>
             ))}

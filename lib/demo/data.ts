@@ -641,6 +641,30 @@ export const marketplaces: Marketplace[] = [
     color: "var(--color-comp-4)",
     region: { tr: "Pazaryeri · TR", en: "Marketplace · TR" },
   },
+  {
+    key: "hepsiburada",
+    name: "Hepsiburada",
+    status: "soon",
+    capability: { tr: "Katalog çekme — yakında", en: "Catalog pull — coming soon" },
+    writeBack: false,
+    products: 0,
+    winRate: 0,
+    lastSync: null,
+    color: "var(--color-comp-5)",
+    region: { tr: "Pazaryeri · TR", en: "Marketplace · TR" },
+  },
+  {
+    key: "n11",
+    name: "n11",
+    status: "soon",
+    capability: { tr: "Katalog çekme — yakında", en: "Catalog pull — coming soon" },
+    writeBack: false,
+    products: 0,
+    winRate: 0,
+    lastSync: null,
+    color: "var(--color-comp-6)",
+    region: { tr: "Pazaryeri · TR", en: "Marketplace · TR" },
+  },
 ];
 
 /* ── Interactive landing demo: a rival drops price → rule fires → recover ──── */
