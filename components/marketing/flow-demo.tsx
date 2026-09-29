@@ -19,7 +19,8 @@ export function FlowDemo() {
   const [playing, setPlaying] = useState(true);
 
   useEffect(() => {
-    if (!playing) return;
+    // Visitors who asked for less motion get a still walkthrough they step through by hand.
+    if (!playing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setStep((s) => (s + 1) % flowDemo.steps.length), 1900);
     return () => clearInterval(id);
   }, [playing]);
@@ -43,7 +44,7 @@ export function FlowDemo() {
         </div>
         <button
           onClick={() => setPlaying((p) => !p)}
-          className="rounded-md border border-border px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="inline-flex h-11 items-center rounded-lg border border-border px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           {playing ? (lang === "tr" ? "Duraklat" : "Pause") : (lang === "tr" ? "Oynat" : "Play")}
         </button>
@@ -64,13 +65,13 @@ export function FlowDemo() {
           </span>
         </div>
         <p className="mt-1.5 text-xs text-muted-foreground">
-          {t(flowDemo.steps[step].label)} · {flowDemo.steps[step].sub} · {lang === "tr" ? "sıra" : "rank"} {rank}/5
+          {t(flowDemo.steps[step].label)} · {lang === "tr" ? "sıra" : "rank"} {rank}/5
         </p>
         {/* progress bar */}
         <div className="pointer-events-none absolute inset-x-0 bottom-3 h-1.5">
           <div className="relative mx-6 h-full overflow-hidden rounded-full bg-border">
             <span
-              className="absolute inset-y-0 left-0 rounded-full bg-primary transition-all duration-500"
+              className="absolute inset-y-0 left-0 rounded-full bg-primary transition-all duration-200"
               style={{ width: `${((step + 1) / flowDemo.steps.length) * 100}%` }}
             />
           </div>

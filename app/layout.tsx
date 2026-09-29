@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 // ── FONTS ─────────────────────────────────────────────────────────────────
 // Distinctive, NOT Inter/Roboto. IBM Plex Sans drives the UI/display voice —
 // a precise, slightly technical face that suits a data tool; IBM Plex Mono
@@ -14,7 +14,7 @@ import { DEFAULT_LANG } from "@/lib/i18n/config";
 
 const sans = IBM_Plex_Sans({
   variable: "--font-sans-app",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
@@ -22,22 +22,39 @@ const sans = IBM_Plex_Sans({
 // IBM Plex Sans also serves as the display face — clean, precise, modern.
 const display = IBM_Plex_Sans({
   variable: "--font-display-app",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   weight: ["600", "700"],
 });
 
 const mono = IBM_Plex_Mono({
   variable: "--font-mono-app",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: `${appConfig.name} — ${appConfig.tagline[DEFAULT_LANG]}`,
+  metadataBase: new URL(`https://${appConfig.domain}`),
+  title: {
+    default: `${appConfig.name} · ${appConfig.tagline[DEFAULT_LANG]}`,
+    template: `%s | ${appConfig.name}`,
+  },
   description: appConfig.description[DEFAULT_LANG],
   applicationName: appConfig.name,
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    siteName: appConfig.name,
+  },
+  twitter: { card: "summary_large_image" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1120" },
+  ],
 };
 
 export default function RootLayout({

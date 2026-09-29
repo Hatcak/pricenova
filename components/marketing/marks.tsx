@@ -34,9 +34,9 @@ export function BrandGlyph({ name, className = "h-5 w-5" }: { name: string; clas
 /** Icon + wordmark, used in the marketing logo row. */
 export function CompanyMark({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center gap-2 text-muted-foreground/70">
+    <span className="inline-flex items-center gap-2 text-muted-foreground">
       <BrandGlyph name={name} />
-      <span className="text-[15px] font-semibold tracking-tight">{name}</span>
+      <span className="text-base font-semibold tracking-tight">{name}</span>
     </span>
   );
 }
@@ -73,7 +73,7 @@ export function ProductPreview() {
 
       {/* mini table */}
       <div className="mt-4 overflow-hidden rounded-xl border border-border">
-        <div className="grid grid-cols-[1.5fr_auto_auto] gap-2 border-b border-border bg-muted/40 px-3 py-2 label-mono text-muted-foreground">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-2 border-b border-border bg-muted/40 px-3 py-2 label-mono text-muted-foreground">
           <span>{lang === "tr" ? "Ürün" : "Product"}</span>
           <span className="text-right text-primary">{lang === "tr" ? "Senin" : "You"}</span>
           <span className="text-right">{lang === "tr" ? "Konum" : "Position"}</span>
@@ -81,7 +81,7 @@ export function ProductPreview() {
         {rows.map((r, i) => (
           <div
             key={r.name}
-            className={`grid grid-cols-[1.5fr_auto_auto] items-center gap-2 px-3 py-2.5 ${i === 0 ? "bg-primary/4" : ""} ${i < rows.length - 1 ? "border-b border-border/60" : ""}`}
+            className={`grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 px-3 py-2.5 ${i === 0 ? "bg-primary/4" : ""} ${i < rows.length - 1 ? "border-b border-border/60" : ""}`}
           >
             <div className="flex items-center gap-2">
               <Sparkline
@@ -110,11 +110,10 @@ export function ProductPreview() {
         ))}
       </div>
 
-      {/* reprice button */}
-      <button className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-[13px] font-semibold text-primary-foreground">
+      {/* reprice "button": a picture of one, so it isn't focusable or clickable */}
+      <div className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg bg-primary py-2.5 text-[13px] font-semibold text-primary-foreground">
         {lang === "tr" ? "14 ürünü yeniden fiyatlandır" : "Reprice 14 products"}
-        <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-[10px]">14</span>
-      </button>
+      </div>
     </div>
   );
 }

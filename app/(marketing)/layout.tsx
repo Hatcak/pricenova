@@ -1,64 +1,138 @@
 "use client";
 
 import Link from "next/link";
-import { AtSign, FlaskConical } from "lucide-react";
+import { AtSign, FlaskConical, Menu, X } from "lucide-react";
 import appConfig from "@/app.config";
 import { Logo, LogoMark } from "@/components/ui/logo";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import { useLang } from "@/components/i18n/language-provider";
 
+/** Close the mobile <details> menu once a link inside it is used. */
+function closeMenu(e: React.MouseEvent<HTMLElement>) {
+  e.currentTarget.closest("details")?.removeAttribute("open");
+}
+
 export default function MarketingLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const { ui, lang } = useLang();
+
+  const sections = [
+    { label: ui.features, href: "/#features" },
+    { label: ui.howItWorks, href: "/#how" },
+    { label: ui.matching, href: "/#matching" },
+    { label: ui.pricing, href: "/#pricing" },
+    { label: ui.faq, href: "/#faq" },
+  ];
+
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/75 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center px-5">
-          <Link href="/">
+    // `.mk` switches on the marketing palette and OS-driven dark mode (globals.css).
+    <div className="mk flex min-h-dvh flex-col bg-background text-foreground">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-card focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:shadow-pop"
+      >
+        {lang === "tr" ? "İçeriğe geç" : "Skip to content"}
+      </a>
+
+      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:px-6">
+          <Link href="/" aria-label={`${appConfig.name}, ${lang === "tr" ? "ana sayfa" : "home"}`} className="inline-flex h-11 items-center rounded-lg">
             <Logo />
           </Link>
-          <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-7 text-sm font-medium text-muted-foreground lg:flex">
-            <Link href="/#features" className="transition-colors hover:text-foreground">{ui.features}</Link>
-            <Link href="/#how" className="transition-colors hover:text-foreground">{ui.howItWorks}</Link>
-            <Link href="/#matching" className="transition-colors hover:text-foreground">{ui.matching}</Link>
-            <Link href="/#pricing" className="transition-colors hover:text-foreground">{ui.pricing}</Link>
-            <Link href="/#faq" className="transition-colors hover:text-foreground">{ui.faq}</Link>
+
+          <nav aria-label={lang === "tr" ? "Ana menü" : "Main"} className="ml-8 hidden items-center gap-1 lg:flex">
+            {sections.map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                className="inline-flex h-11 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {s.label}
+              </Link>
+            ))}
           </nav>
+
           <div className="ml-auto flex items-center gap-2">
-            <LanguageToggle className="mr-1" />
-            <Link href="/login" className="hidden text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:inline">
+            <LanguageToggle large className="hidden md:inline-flex" />
+            <Link
+              href="/login"
+              className="hidden h-11 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
+            >
               {ui.signIn}
             </Link>
-            {/* Demo and signup are separate doors — never collapse them into one. */}
+            {/* Demo and signup are separate doors. Never collapse them into one. */}
             <Link
               href="/demo"
-              className="hidden h-9 items-center gap-1.5 rounded-lg border border-border bg-card px-3.5 text-[13px] font-semibold text-foreground shadow-pill transition-colors hover:bg-muted sm:inline-flex"
+              className="hidden h-11 items-center gap-2 rounded-lg border border-border bg-card px-4 text-sm font-semibold transition-colors hover:bg-muted sm:inline-flex"
             >
-              <FlaskConical className="h-3.5 w-3.5 text-primary" />
-              {lang === "tr" ? "Demo" : "Demo"}
+              <FlaskConical className="h-4 w-4 text-primary" aria-hidden />
+              Demo
             </Link>
             <Link
               href="/signup"
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-4 text-[13px] font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
+              className="inline-flex h-11 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
             >
               {ui.tryFree}
             </Link>
+
+            {/* Phones and tablets: everything the desktop header shows, in one menu. */}
+            <details className="group relative lg:hidden">
+              <summary
+                className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-lg border border-border bg-card [&::-webkit-details-marker]:hidden"
+                aria-label={lang === "tr" ? "Menü" : "Menu"}
+              >
+                <Menu className="h-5 w-5 group-open:hidden" aria-hidden />
+                <X className="hidden h-5 w-5 group-open:block" aria-hidden />
+              </summary>
+              <div className="absolute right-0 top-full mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-border bg-card p-2 shadow-pop">
+                <nav aria-label={lang === "tr" ? "Mobil menü" : "Mobile"}>
+                  <ul>
+                    {sections.map((s) => (
+                      <li key={s.href}>
+                        <Link
+                          href={s.href}
+                          onClick={closeMenu}
+                          className="flex h-11 items-center rounded-lg px-3 text-sm font-medium hover:bg-muted"
+                        >
+                          {s.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+                <div className="mt-2 grid gap-1 border-t border-border pt-2">
+                  <Link href="/demo" onClick={closeMenu} className="flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold hover:bg-muted sm:hidden">
+                    <FlaskConical className="h-4 w-4 text-primary" aria-hidden />
+                    {ui.openDemo}
+                  </Link>
+                  <Link href="/login" onClick={closeMenu} className="flex h-11 items-center rounded-lg px-3 text-sm font-medium hover:bg-muted md:hidden">
+                    {ui.signIn}
+                  </Link>
+                  <div className="flex items-center justify-between px-3 py-1 md:hidden">
+                    <span className="text-sm text-muted-foreground">{lang === "tr" ? "Dil" : "Language"}</span>
+                    <LanguageToggle large />
+                  </div>
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </header>
 
-      <div className="flex-1">{children}</div>
+      <main id="main" className="flex-1">
+        {children}
+      </main>
 
       <footer className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-5 py-12">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
             <div className="max-w-xs">
               <Logo />
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {lang === "tr"
-                  ? "E-ticaret için rakip fiyat izleme ve otomatik yeniden fiyatlandırma. Her rakip fiyatı, geçmişi ve konumun tek panelde."
-                  : "Competitor price monitoring and auto-repricing for e-commerce. Every rival price, history and position in one panel."}
+                  ? "E-ticaret için rakip fiyat takibi ve otomatik fiyatlandırma. Her rakip fiyatı, geçmişi ve konumun tek panelde."
+                  : "Competitor price tracking and auto-repricing for e-commerce. Every rival price, its history and your position in one panel."}
               </p>
             </div>
             {/* Every link below goes somewhere real. Nothing decorative. */}
@@ -109,16 +183,16 @@ export default function MarketingLayout({
               <a
                 href={`mailto:hello@${appConfig.domain}`}
                 aria-label={lang === "tr" ? "Bize e-posta gönder" : "Email us"}
-                className="grid h-8 w-8 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="grid h-11 w-11 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                <AtSign className="h-4 w-4" />
+                <AtSign className="h-4 w-4" aria-hidden />
               </a>
               <Link
                 href="/"
-                aria-label={appConfig.name}
-                className="grid h-8 w-8 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                aria-label={lang === "tr" ? "Ana sayfa" : "Home"}
+                className="grid h-11 w-11 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                <LogoMark className="h-4 w-4" />
+                <LogoMark className="h-5 w-5" />
               </Link>
             </div>
           </div>
@@ -131,16 +205,16 @@ export default function MarketingLayout({
 function FooterCol({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <p className="label-mono text-muted-foreground">{title}</p>
-      <ul className="mt-3 space-y-2">
+      <h2 className="label-mono text-muted-foreground">{title}</h2>
+      <ul className="mt-2">
         {links.map((l) => (
           <li key={l.href}>
             {l.href.startsWith("mailto:") ? (
-              <a href={l.href} className="text-muted-foreground transition-colors hover:text-foreground">
+              <a href={l.href} className="inline-flex min-h-11 min-w-11 items-center text-muted-foreground transition-colors hover:text-foreground">
                 {l.label}
               </a>
             ) : (
-              <Link href={l.href} className="text-muted-foreground transition-colors hover:text-foreground">
+              <Link href={l.href} className="inline-flex min-h-11 min-w-11 items-center text-muted-foreground transition-colors hover:text-foreground">
                 {l.label}
               </Link>
             )}

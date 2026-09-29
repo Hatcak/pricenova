@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import appConfig from "@/app.config";
+import { openGraph } from "@/lib/seo";
 import { SeoLanding, type SeoLandingContent } from "@/components/marketing/seo-landing";
 
 export const metadata: Metadata = {
-  title: "Hepsiburada Fiyat Takip | PriceNova",
+  title: "Hepsiburada Fiyat Takip",
   description:
     "Hepsiburada'da aynı ürünü satan rakip satıcıların fiyatlarını takip edin, en ucuz olmaktan çıktığınızda uyarı alın ve marjınızı koruyarak fiyat kararı verin. Kayıt gerektirmeyen demo.",
   keywords: [
@@ -14,12 +15,11 @@ export const metadata: Metadata = {
     "pazaryeri fiyat takibi",
   ],
   alternates: { canonical: `https://${appConfig.domain}/hepsiburada-fiyat-takip` },
-  openGraph: {
+  openGraph: openGraph({
     title: "Hepsiburada Fiyat Takip | PriceNova",
     description: "Hepsiburada'daki rakip satıcıları izleyin, fiyat düştüğünde anında haber alın.",
     url: `https://${appConfig.domain}/hepsiburada-fiyat-takip`,
-    type: "website",
-  },
+  }),
 };
 
 const content: SeoLandingContent = {
@@ -49,15 +49,15 @@ const content: SeoLandingContent = {
     {
       title: { tr: "En ucuz olmak, zararına satmak demek değil", en: "Being cheapest doesn't mean selling at a loss" },
       body: {
-        tr: "Bir rakip fiyatı maliyetinizin altına çektiğinde onu takip etmek, satışı kazanıp parayı kaybetmek demektir. PriceNova'da her ürün için bir taban belirlersiniz; örneğin maliyet +%12. Önerilen fiyat bu tabanın altına hiçbir zaman inmez. Rakip daha aşağı indiğinde öneri tabanda durur.",
-        en: "When a rival drops below your cost, following them means winning the sale and losing the money. In PriceNova you set a floor for each product — say cost +12%. A suggested price never goes below it. When a rival goes lower, the suggestion stops at the floor.",
+        tr: "Bir rakip fiyatı maliyetinizin altına çektiğinde onu takip etmek, satışı kazanıp parayı kaybetmek demektir. PriceNova'da her ürün için bir taban belirlersiniz, örneğin maliyet +%12. Önerilen fiyat bu tabanın altına hiçbir zaman inmez. Rakip daha aşağı indiğinde öneri tabanda durur.",
+        en: "When a rival drops below your cost, following them means winning the sale and losing the money. In PriceNova you set a floor for each product, say cost +12%. A suggested price never goes below it. When a rival goes lower, the suggestion stops at the floor.",
       },
     },
     {
       title: { tr: "Önemli fark: Hepsiburada'da izleriz, fiyatı siz yazarsınız", en: "An important limit: we watch, you write" },
       body: {
         tr: "Kendi mağazanızda (Shopify, WooCommerce) kurallarınız fiyatı gerçekten değiştirebilir. Hepsiburada tarafında ise PriceNova şu an yalnızca fiyatları okur. Bir kural tetiklendiğinde fiyatı değiştirmez; size uyarı gönderir ve öneriyi onay kuyruğuna bırakır. Kararı siz verir, değişikliği Hepsiburada satıcı panelinden siz yaparsınız.",
-        en: "On your own store (Shopify, WooCommerce) your rules really can change a price. On Hepsiburada, PriceNova currently only reads prices. When a rule fires it doesn't change anything — it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the Hepsiburada seller panel yourself.",
+        en: "On your own store (Shopify, WooCommerce) your rules really can change a price. On Hepsiburada, PriceNova currently only reads prices. When a rule fires it doesn't change anything; it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the Hepsiburada seller panel yourself.",
       },
     },
     {

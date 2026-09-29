@@ -37,7 +37,7 @@ const SECTIONS: { title: L; body: L[] }[] = [
       },
       {
         tr: "Teknik kayıtlar: oturum açma zamanları ve hata kayıtları gibi, hizmeti güvenli ve çalışır tutmak için gereken asgari bilgiler.",
-        en: "Technical logs: sign-in times and error records — the minimum needed to keep the service secure and working.",
+        en: "Technical logs: sign-in times and error records: the minimum needed to keep the service secure and working.",
       },
     ],
   },
@@ -55,7 +55,7 @@ const SECTIONS: { title: L; body: L[] }[] = [
     body: [
       {
         tr: "Tek bir amaç için: size rakip fiyatlarını göstermek, fiyat değiştiğinde haber vermek ve sizin tanımladığınız kurallara göre fiyat önerisi üretmek ya da izin verdiyseniz fiyatı güncellemek. Verilerinizi reklam amacıyla kullanmayız ve üçüncü taraflara satmayız.",
-        en: "For one purpose: to show you rival prices, alert you when they move, and either suggest a new price or — if you allowed it — update your price according to the rules you set. We do not use your data for advertising and we do not sell it.",
+        en: "For one purpose: to show you rival prices, alert you when they move, and either suggest a new price or, if you allowed it, update your price according to the rules you set. We do not use your data for advertising and we do not sell it.",
       },
     ],
   },
@@ -118,17 +118,17 @@ export function PrivacyContent() {
   const { t, lang } = useLang();
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-16">
-      <h1 className="font-display text-[34px] font-bold leading-tight tracking-[-0.02em] sm:text-[42px]">
+    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
+      <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl sm:leading-[1.1]">
         {lang === "tr" ? "Gizlilik Politikası" : "Privacy Policy"}
       </h1>
       <p className="mt-2 text-sm text-muted-foreground">{t(UPDATED)}</p>
 
       {/* The page says what it is. Shipping a template as if a lawyer wrote it
           would be exactly the kind of quiet dishonesty this kit avoids. */}
-      <div className="mt-6 flex gap-3 rounded-2xl border border-warning/40 bg-warning/5 p-4">
-        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-warning" />
-        <div className="min-w-0 text-[13.5px] leading-relaxed">
+      <div className="mt-6 flex gap-3 rounded-2xl border border-warning bg-warning/10 p-4">
+        <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
+        <div className="min-w-0 text-sm leading-relaxed">
           <p className="font-semibold text-foreground">
             {lang === "tr" ? "Bu bir şablondur, hukuki görüş değildir." : "This is a template, not legal advice."}
           </p>
@@ -146,7 +146,7 @@ export function PrivacyContent() {
             <h2 className="font-display text-xl font-bold tracking-tight">{t(s.title)}</h2>
             <div className="mt-3 space-y-3">
               {s.body.map((p) => (
-                <p key={t(p)} className="text-[15px] leading-relaxed text-muted-foreground">
+                <p key={t(p)} className="max-w-prose text-base leading-relaxed text-muted-foreground">
                   {t(p)}
                 </p>
               ))}
@@ -158,19 +158,19 @@ export function PrivacyContent() {
           <h2 className="font-display text-xl font-bold tracking-tight">
             {lang === "tr" ? "9. İletişim" : "9. Contact"}
           </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-prose text-base leading-relaxed text-muted-foreground">
             {lang === "tr"
               ? "Gizlilikle ilgili her soru ve talep için:"
               : "For any privacy question or request:"}
           </p>
           <a
             href={`mailto:privacy@${appConfig.domain}`}
-            className="mt-3 inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-[14px] font-semibold text-foreground shadow-pill transition-colors hover:bg-muted"
+            className="mt-3 inline-flex items-center gap-2 rounded-lg border border-border bg-card min-h-11 px-4 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
           >
-            <Mail className="h-4 w-4 text-muted-foreground" />
+            <Mail className="h-4 w-4 text-muted-foreground" aria-hidden />
             privacy@{appConfig.domain}
           </a>
-          <p className="mt-4 text-[13.5px] text-muted-foreground">
+          <p className="mt-4 text-sm text-muted-foreground">
             {lang === "tr"
               ? "[BURAYI DOLDURUN: şirket unvanınız, adresiniz ve varsa veri sorumlusu temsilcinizin bilgileri.]"
               : "[FILL THIS IN: your registered company name, address and data-controller contact.]"}
@@ -179,7 +179,7 @@ export function PrivacyContent() {
       </div>
 
       <div className="mt-12 border-t border-border pt-6">
-        <Link href="/" className="text-[14px] font-medium text-primary hover:underline">
+        <Link href="/" className="inline-flex min-h-11 items-center text-sm font-medium text-primary hover:underline">
           ← {lang === "tr" ? "Ana sayfaya dön" : "Back to the homepage"}
         </Link>
       </div>

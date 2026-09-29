@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import appConfig from "@/app.config";
+import { openGraph } from "@/lib/seo";
 import { SeoLanding, type SeoLandingContent } from "@/components/marketing/seo-landing";
 
 export const metadata: Metadata = {
-  title: "n11 Fiyat Takip | PriceNova",
+  title: "n11 Fiyat Takip",
   description:
     "n11'de rakip mağazaların fiyatlarını takip edin, fiyat düştüğünde uyarı alın ve marjınızı koruyarak fiyat kararı verin. Kayıt gerektirmeyen demo.",
   keywords: [
@@ -14,12 +15,11 @@ export const metadata: Metadata = {
     "pazaryeri fiyat takibi",
   ],
   alternates: { canonical: `https://${appConfig.domain}/n11-fiyat-takip` },
-  openGraph: {
+  openGraph: openGraph({
     title: "n11 Fiyat Takip | PriceNova",
     description: "n11'deki rakip mağazaları izleyin, fiyat düştüğünde anında haber alın.",
     url: `https://${appConfig.domain}/n11-fiyat-takip`,
-    type: "website",
-  },
+  }),
 };
 
 const content: SeoLandingContent = {
@@ -57,7 +57,7 @@ const content: SeoLandingContent = {
       title: { tr: "Önemli fark: n11'de izleriz, fiyatı siz yazarsınız", en: "An important limit: we watch, you write" },
       body: {
         tr: "Kendi mağazanızda (Shopify, WooCommerce) kurallarınız fiyatı gerçekten değiştirebilir. n11 tarafında ise PriceNova şu an yalnızca fiyatları okur. Bir kural tetiklendiğinde fiyatı değiştirmez; size uyarı gönderir ve öneriyi onay kuyruğuna bırakır. Kararı siz verir, değişikliği n11 mağaza panelinden siz yaparsınız.",
-        en: "On your own store (Shopify, WooCommerce) your rules really can change a price. On n11, PriceNova currently only reads prices. When a rule fires it doesn't change anything — it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the n11 store panel yourself.",
+        en: "On your own store (Shopify, WooCommerce) your rules really can change a price. On n11, PriceNova currently only reads prices. When a rule fires it doesn't change anything; it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the n11 store panel yourself.",
       },
     },
     {

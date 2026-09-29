@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import appConfig from "@/app.config";
+import { openGraph } from "@/lib/seo";
 import { SeoLanding, type SeoLandingContent } from "@/components/marketing/seo-landing";
 
 export const metadata: Metadata = {
-  title: "Trendyol Fiyat Takip Sistemi | PriceNova",
+  title: "Trendyol Fiyat Takip Sistemi",
   description:
     "Trendyol'daki rakip satıcıların fiyatlarını takip edin, kutuyu kaybettiğinizde uyarı alın ve marjınızı koruyarak fiyat kararı verin. Kayıt gerektirmeyen demo.",
   keywords: [
@@ -14,12 +15,11 @@ export const metadata: Metadata = {
     "trendyol satıcı fiyat",
   ],
   alternates: { canonical: `https://${appConfig.domain}/trendyol-fiyat-takip-sistemi` },
-  openGraph: {
+  openGraph: openGraph({
     title: "Trendyol Fiyat Takip Sistemi | PriceNova",
     description: "Trendyol'daki rakip satıcıları izleyin, fiyat düştüğünde anında haber alın.",
     url: `https://${appConfig.domain}/trendyol-fiyat-takip-sistemi`,
-    type: "website",
-  },
+  }),
 };
 
 const content: SeoLandingContent = {
@@ -50,7 +50,7 @@ const content: SeoLandingContent = {
       title: { tr: "Önemli fark: Trendyol'da izleriz, fiyatı siz yazarsınız", en: "An important limit: we watch, you write" },
       body: {
         tr: "Bunu baştan net söylemek gerekir. Kendi mağazanızda (Shopify, WooCommerce) kurallarınız fiyatı gerçekten değiştirebilir. Trendyol tarafında ise PriceNova şu an yalnızca fiyatları okur. Bir kural tetiklendiğinde fiyatı değiştirmez; size uyarı gönderir ve öneriyi onay kuyruğuna bırakır. Kararı siz verir, değişikliği Trendyol panelinden siz yaparsınız.",
-        en: "This needs saying up front. On your own store (Shopify, WooCommerce) your rules really can change a price. On Trendyol, PriceNova currently only reads prices. When a rule fires it doesn't change anything — it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the Trendyol panel yourself.",
+        en: "This needs saying up front. On your own store (Shopify, WooCommerce) your rules really can change a price. On Trendyol, PriceNova currently only reads prices. When a rule fires it doesn't change anything; it alerts you and leaves the suggestion in your approval queue. You make the call and apply it in the Trendyol panel yourself.",
       },
     },
     {

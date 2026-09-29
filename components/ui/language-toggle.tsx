@@ -7,9 +7,12 @@ import { cn } from "@/lib/utils";
 export function LanguageToggle({
   className,
   onDark = false,
+  large = false,
 }: {
   className?: string;
   onDark?: boolean;
+  /** 44px touch targets, for the public pages where phones are the main audience. */
+  large?: boolean;
 }) {
   const { lang, setLang } = useLang();
   return (
@@ -26,7 +29,8 @@ export function LanguageToggle({
           onClick={() => setLang(l)}
           aria-pressed={lang === l}
           className={cn(
-            "rounded-md px-2 py-1 transition-colors cursor-pointer",
+            "rounded-md transition-colors cursor-pointer",
+            large ? "h-11 min-w-11 px-3 text-sm" : "px-2 py-1",
             lang === l
               ? "bg-primary text-primary-foreground"
               : onDark
