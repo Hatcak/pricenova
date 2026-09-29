@@ -32,7 +32,7 @@ export const ui = {
     bySigningIn: "Giriş yaparak hizmet şartlarını kabul etmiş olursun.",
     // demo vs account, said plainly on the auth screens
     realAccount: "Kendi hesabın",
-    realAccountNote: "Kendi ürünlerini ekler, kendi rakiplerini izlersin. Kart istemiyoruz.",
+    realAccountNote: "Kendi ürünlerini ekler, kendi rakiplerini izlersin. 3 gün ücretsiz, kart istemiyoruz.",
     demoAccount: "Örnek hesap",
     demoAccountNote: "Hazır bir mağazanın verisiyle paneli gez. Kayıt yok, hiçbir şey kaydedilmez.",
     orJustLook: "Ya da sadece bakmak istiyorsan",
@@ -85,7 +85,7 @@ export const ui = {
     authBlurb: "Track your rivals' prices, hear about it the moment you're undercut, and reprice on your own rules — with your own approval, if you want it.",
     bySigningIn: "By signing in you agree to the terms of service.",
     realAccount: "Your own account",
-    realAccountNote: "Add your products, track your rivals. No card required.",
+    realAccountNote: "Add your products, track your rivals. Free for 3 days, no card required.",
     demoAccount: "Sample account",
     demoAccountNote: "Explore the panel with a ready-made store's data. No signup, nothing saved.",
     orJustLook: "Or if you just want a look",

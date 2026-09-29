@@ -6,14 +6,17 @@ import {
   SUPABASE_URL,
   isSupabaseConfigured,
 } from "@/lib/supabase/config";
+import { getTrialStatus } from "@/lib/trial";
 
 /**
  * Next 16 calls this Proxy; it's what earlier versions called Middleware.
  *
- * Two jobs, in this order:
+ * Three jobs, in this order:
  *  1. Keep the Supabase session cookie fresh on every request.
  *  2. Send signed-out visitors to /login when they ask for a dashboard route —
  *     unless they're here on the demo door, which is a deliberate way in.
+ *  3. Send signed-in users whose free trial has run out to /deneme-bitti
+ *     (see lib/trial.ts).
  *
  * With no Supabase keys the whole thing is a no-op and the kit stays in demo
  * mode, exactly as it behaves out of the box.
@@ -67,6 +70,14 @@ export async function proxy(request: NextRequest) {
     // Come back here once they're in.
     login.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(login);
+  }
+
+  // Signed in but the free trial is over and there's no paid plan yet.
+  if (user && getTrialStatus(user).state === "expired") {
+    const ended = request.nextUrl.clone();
+    ended.pathname = "/deneme-bitti";
+    ended.search = "";
+    return NextResponse.redirect(ended);
   }
 
   return response;

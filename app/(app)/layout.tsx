@@ -3,6 +3,7 @@ import { AppBanners } from "@/components/app/banners";
 import { Sidebar } from "@/components/app/sidebar";
 import { Topbar } from "@/components/app/topbar";
 import { getUser } from "@/lib/supabase/server";
+import { getTrialStatus } from "@/lib/trial";
 
 export default async function AppLayout({
   children,
@@ -15,6 +16,8 @@ export default async function AppLayout({
         email: user.email ?? "",
       }
     : null;
+  // The lock itself lives in proxy.ts; this only drives the countdown banner.
+  const trial = user ? getTrialStatus(user) : null;
 
   return (
     <AppStateProvider>
@@ -28,7 +31,7 @@ export default async function AppLayout({
             aria-hidden
           />
           <Topbar />
-          <AppBanners />
+          <AppBanners trialDaysLeft={trial?.state === "trial" ? trial.daysLeft : undefined} />
           <main className="relative z-10 flex-1 overflow-y-auto p-5 lg:p-8">{children}</main>
         </div>
       </div>

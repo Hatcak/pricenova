@@ -33,6 +33,7 @@ import { ProductPreview, CompanyMark } from "@/components/marketing/marks";
 import { useLang } from "@/components/i18n/language-provider";
 import { cn, formatPrice } from "@/lib/utils";
 import type { L } from "@/lib/i18n/config";
+import { TRIAL_DAYS } from "@/lib/trial";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Local bilingual copy that doesn't belong in app.config.ts. Everything here is
@@ -410,7 +411,7 @@ export default function LandingPage() {
                   {t(m.heroCtaPrimary)} <ArrowRight className="h-4 w-4" />
                 </span>
                 <span className="mt-0.5 text-[11.5px] text-primary-foreground/75">
-                  {lang === "tr" ? "Kendi ürünlerinle · kart istemiyoruz" : "With your own products · no card"}
+                  {lang === "tr" ? `${TRIAL_DAYS} gün ücretsiz · kart istemiyoruz` : `Free for ${TRIAL_DAYS} days · no card`}
                 </span>
               </Link>
               <Link
@@ -993,7 +994,19 @@ export default function LandingPage() {
           <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">{tt(sectionCopy.pricingTitle)}</h2>
           <p className="mt-3 text-muted-foreground">{tt(sectionCopy.pricingSub)}</p>
         </div>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-2 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-3 text-[13.5px]">
+          {[
+            { tr: `${TRIAL_DAYS} gün ücretsiz, tüm özellikler açık`, en: `Free for ${TRIAL_DAYS} days, every feature on` },
+            { tr: "Kart istemiyoruz", en: "No card needed" },
+            { tr: "Süre dolunca panel kilitlenir, verilerin silinmez", en: "When it ends the panel locks; nothing is deleted" },
+          ].map((p) => (
+            <span key={p.en} className="inline-flex items-center gap-1.5 text-foreground/85">
+              <Check className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={3} />
+              {tt(p)}
+            </span>
+          ))}
+        </div>
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
           {m.pricing.map((tier) => (
             <div
               key={tier.name}
@@ -1010,7 +1023,7 @@ export default function LandingPage() {
               )}
               <h3 className="font-semibold tracking-tight">{tier.name}</h3>
               <div className="mt-2 flex items-baseline gap-1">
-                <span className="font-display text-4xl font-bold tracking-tight">{tier.price}</span>
+                <span className="font-display text-4xl font-bold tracking-tight">{t(tier.price)}</span>
                 {tier.period && <span className="text-sm text-muted-foreground">{t(tier.period)}</span>}
               </div>
               <p className="mt-1.5 text-sm text-muted-foreground">{t(tier.tagline)}</p>

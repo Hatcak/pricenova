@@ -44,7 +44,8 @@ export interface Stat {
 
 export interface PricingTier {
   name: string;
-  price: string;
+  /** Per language: Turkish visitors see lira, everyone else sees dollars. */
+  price: L;
   period?: L;
   tagline: L;
   features: L[];
@@ -296,9 +297,9 @@ export const appConfig: AppConfig = {
     ],
 
     pricing: [
-      { name: "Starter", price: "$49", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "Başla", en: "Get started" } },
-      { name: "Growth", price: "$149", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "Başla", en: "Get started" }, featured: true },
-      { name: "Scale", price: "$259", period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada tarama & API", en: "Per-minute scans & API" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], cta: { tr: "Başla", en: "Get started" } },
+      { name: "Starter", price: { tr: "₺1.990", en: "$49" }, period: { tr: "/ay", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "3 gün ücretsiz dene", en: "Try free for 3 days" } },
+      { name: "Growth", price: { tr: "₺5.990", en: "$149" }, period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "3 gün ücretsiz dene", en: "Try free for 3 days" }, featured: true },
+      { name: "Scale", price: { tr: "₺9.990", en: "$259" }, period: { tr: "/ay", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada tarama & API", en: "Per-minute scans & API" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], cta: { tr: "3 gün ücretsiz dene", en: "Try free for 3 days" } },
     ],
     /**
      * Written for the person deciding whether to trust us with their prices —
@@ -359,8 +360,8 @@ export const appConfig: AppConfig = {
       {
         q: { tr: "Denemek için kayıt olmam veya kart girmem gerekiyor mu?", en: "Do I need to sign up or enter a card to try it?" },
         a: {
-          tr: "Hayır. \"Demo panelini aç\" dersen örnek bir mağazanın ürünleri, rakipleri ve fiyat geçmişiyle dolu paneli anında görürsün — kayıt yok, kart yok, kurulum yok. Kendi ürünlerinle denemeye hazır olduğunda ücretsiz hesap açarsın; o zaman da kart istemiyoruz.",
-          en: "No. \"Open the demo panel\" drops you straight into a workspace filled with a sample store's products, rivals and price history — no signup, no card, no setup. When you're ready to try it with your own products you create a free account, and we don't ask for a card then either.",
+          tr: "Hayır. \"Demo panelini aç\" dersen örnek bir mağazanın ürünleri, rakipleri ve fiyat geçmişiyle dolu paneli anında görürsün — kayıt yok, kart yok, kurulum yok. Kendi ürünlerinle denemeye hazır olduğunda hesap açarsın: 3 gün boyunca tüm özellikler ücretsiz, yine kart istemiyoruz. Süre dolunca panel kilitlenir ama verilerin silinmez; bir paket seçtiğinde kaldığın yerden devam edersin.",
+          en: "No. \"Open the demo panel\" drops you straight into a workspace filled with a sample store's products, rivals and price history — no signup, no card, no setup. When you're ready to try it with your own products you create an account: every feature is free for 3 days, and we still don't ask for a card. When the trial ends the panel locks but nothing is deleted — pick a plan and you carry on where you left off.",
         },
       },
       {

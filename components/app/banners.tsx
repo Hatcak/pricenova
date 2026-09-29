@@ -1,22 +1,45 @@
 "use client";
 
 /**
- * Two standing notices at the top of the dashboard: one says you're in the
- * sample account (so nothing here is mistaken for your own catalog), the other
- * says automatic repricing is stopped (so a stop is never silent).
+ * Standing notices at the top of the dashboard: how long the free trial has
+ * left, that you're in the sample account (so nothing here is mistaken for
+ * your own catalog), and that automatic repricing is stopped (so a stop is
+ * never silent).
  */
 
 import Link from "next/link";
-import { FlaskConical, OctagonX } from "lucide-react";
+import { FlaskConical, Hourglass, OctagonX } from "lucide-react";
 import { useAppState } from "@/components/app/app-state";
 import { useLang } from "@/components/i18n/language-provider";
 
-export function AppBanners() {
+export function AppBanners({ trialDaysLeft }: { trialDaysLeft?: number }) {
   const { isDemo, autopilot, setAutopilot } = useAppState();
   const { lang } = useLang();
 
   return (
     <>
+      {trialDaysLeft !== undefined && (
+        <div className="flex flex-wrap items-center gap-3 border-b border-warning/25 bg-warning/10 px-5 py-2.5 lg:px-8">
+          <Hourglass className="h-4 w-4 shrink-0 text-warning" />
+          <p className="text-[13px] text-foreground/80">
+            <span className="font-semibold text-foreground">
+              {lang === "tr"
+                ? trialDaysLeft <= 1 ? "Ücretsiz denemenin son günü." : `Ücretsiz denemenin bitmesine ${trialDaysLeft} gün var.`
+                : trialDaysLeft <= 1 ? "Last day of your free trial." : `${trialDaysLeft} days left in your free trial.`}
+            </span>{" "}
+            {lang === "tr"
+              ? "Süre dolunca panel kilitlenir; verilerin silinmez."
+              : "When it ends the dashboard locks; nothing is deleted."}
+          </p>
+          <Link
+            href="/#pricing"
+            className="ml-auto shrink-0 rounded-lg bg-primary px-3 py-1.5 text-[12.5px] font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            {lang === "tr" ? "Paketleri gör" : "See the plans"}
+          </Link>
+        </div>
+      )}
+
       {!autopilot && (
         <div className="flex flex-wrap items-center gap-3 border-b border-destructive/25 bg-destructive/10 px-5 py-2.5 lg:px-8">
           <OctagonX className="h-4 w-4 shrink-0 text-destructive" />
