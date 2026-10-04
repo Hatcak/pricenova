@@ -234,7 +234,7 @@ export const appConfig: AppConfig = {
       { icon: "bell-ring", title: { tr: "Fiyat uyarıları", en: "Price alerts" }, body: { tr: "Bir rakip fiyat düşürdüğünde ya da sen en ucuz olmaktan çıktığında e-posta ve Slack'e anında bildirim.", en: "Get an instant email and Slack alert when a rival drops a price or you stop being the cheapest." } },
       { icon: "wand-sparkles", title: { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, body: { tr: "\"En düşüğü -%1 geç\" ya da \"taban = maliyet +%10\" gibi kurallar tanımla; PriceNova fiyatını otomatik ayarlasın.", en: "Set rules like \"match lowest -1%\" or \"floor = cost +10%\" and let PriceNova adjust your price automatically." } },
       { icon: "history", title: { tr: "Fiyat geçmişi", en: "Price history" }, body: { tr: "Her rakip için fiyatın zaman içindeki seyrini gör; sezonsal hamleleri ve indirim döngülerini yakala.", en: "See every competitor's price over time and catch seasonal moves and discount cycles before they hurt you." } },
-      { icon: "store", title: { tr: "Pazaryeri desteği", en: "Marketplace support" }, body: { tr: "Shopify, WooCommerce, Amazon, Trendyol, Hepsiburada ve n11'deki ürünlerini tek panelden izle.", en: "Watch your products on Shopify, WooCommerce, Amazon, Trendyol, Hepsiburada and n11 from one panel." } },
+      { icon: "store", title: { tr: "Pazaryeri desteği", en: "Marketplace support" }, body: { tr: "Shopify, WooCommerce, Trendyol, Hepsiburada ve n11'deki ürünlerini tek panelden izle.", en: "Watch your products on Shopify, WooCommerce, Trendyol, Hepsiburada and n11 from one panel." } },
       { icon: "file-chart-column", title: { tr: "Raporlar", en: "Reports" }, body: { tr: "Fiyat endeksin, kazandığın/kaybettiğin SKU'lar ve marj etkisi haftalık özetlerle gelir.", en: "Your price index, won/lost SKUs and margin impact arrive as weekly digests and exportable reports." } },
     ],
     /**
@@ -244,7 +244,7 @@ export const appConfig: AppConfig = {
      * can point at a feature or a plan for.
      */
     stats: [
-      { value: "6", label: { tr: "mağaza & pazaryeri", en: "stores & marketplaces" } },
+      { value: "5", label: { tr: "mağaza & pazaryeri", en: "stores & marketplaces" } },
       { value: "1 dk", label: { tr: "en sık fiyat kontrolü", en: "fastest price check" } },
       { value: "14 gün", label: { tr: "ücretsiz deneme", en: "free trial" } },
       { value: "2", label: { tr: "uyarı kanalı", en: "alert channels" } },
@@ -334,8 +334,8 @@ export const appConfig: AppConfig = {
       {
         q: { tr: "Kendi mağazamı bağlamak ne kadar sürer?", en: "How long does connecting my own store take?" },
         a: {
-          tr: "Shopify veya WooCommerce kullanıyorsan mağazanı bağlaman birkaç dakika sürer; ürünlerin kendiliğinden gelir. Amazon, Trendyol, Hepsiburada ve n11'deki listelerini de takip edebiliriz. Rakip eşleştirmeleri ilk gün hazır olur, sen onaylarsın ve izleme başlar.",
-          en: "If you're on Shopify or WooCommerce, connecting takes a few minutes and your products come across by themselves. We can track your Amazon, Trendyol, Hepsiburada and n11 listings too. Competitor matches are ready the same day; you approve them and monitoring starts.",
+          tr: "Shopify veya WooCommerce kullanıyorsan mağazanı bağlaman birkaç dakika sürer; ürünlerin kendiliğinden gelir. Trendyol, Hepsiburada ve n11'deki listelerini de takip edebiliriz. Rakip eşleştirmeleri ilk gün hazır olur, sen onaylarsın ve izleme başlar.",
+          en: "If you're on Shopify or WooCommerce, connecting takes a few minutes and your products come across by themselves. We can track your Trendyol, Hepsiburada and n11 listings too. Competitor matches are ready the same day; you approve them and monitoring starts.",
         },
       },
     ],

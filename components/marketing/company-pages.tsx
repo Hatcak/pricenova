@@ -78,8 +78,8 @@ export function AboutContent() {
         title={tr ? "Fiyat kararlarını tahminden kurtarıyoruz." : "Taking the guesswork out of pricing."}
         intro={
           tr
-            ? `${name}, Türkiye'deki e-ticaret satıcıları için rakip fiyat takibi ve otomatik fiyatlandırma aracıdır. Trendyol, Hepsiburada, n11, Amazon, Shopify ve WooCommerce'te aynı ürünü satan rakiplerinin fiyatını izler, geride kaldığında haber verir ve istersen senin belirlediğin sınırlar içinde fiyatını günceller.`
-            : `${name} is a competitor price tracking and repricing tool for e-commerce sellers in Turkey. It watches the rivals selling your products on Trendyol, Hepsiburada, n11, Amazon, Shopify and WooCommerce, tells you when you fall behind and, if you want, updates your price within the limits you set.`
+            ? `${name}, Türkiye'deki e-ticaret satıcıları için rakip fiyat takibi ve otomatik fiyatlandırma aracıdır. Trendyol, Hepsiburada, n11, Shopify ve WooCommerce'te aynı ürünü satan rakiplerinin fiyatını izler, geride kaldığında haber verir ve istersen senin belirlediğin sınırlar içinde fiyatını günceller.`
+            : `${name} is a competitor price tracking and repricing tool for e-commerce sellers in Turkey. It watches the rivals selling your products on Trendyol, Hepsiburada, n11, Shopify and WooCommerce, tells you when you fall behind and, if you want, updates your price within the limits you set.`
         }
       />
 

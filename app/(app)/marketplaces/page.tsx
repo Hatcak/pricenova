@@ -94,8 +94,8 @@ export default function MarketplacesPage() {
             </p>
             <p className="mt-1 max-w-2xl text-[13.5px] leading-relaxed text-muted-foreground">
               {lang === "tr"
-                ? "Kendi mağazanda (Shopify, WooCommerce) kuralların fiyatı gerçekten değiştirebilir. Amazon, Trendyol, Hepsiburada ve n11 gibi pazaryerlerinde ise şu an yalnızca fiyatları okuyabiliyoruz — orada bir kural tetiklendiğinde fiyatı değiştirmez, sana uyarı gönderir ve öneriyi onay kuyruğuna bırakır."
-                : "On your own store (Shopify, WooCommerce) your rules really can change a price. On marketplaces like Amazon, Trendyol, Hepsiburada and n11 we can currently only read prices — a rule that fires there won't change anything, it alerts you and leaves the suggestion in your approval queue."}
+                ? "Kendi mağazanda (Shopify, WooCommerce) kuralların fiyatı gerçekten değiştirebilir. Trendyol, Hepsiburada ve n11 gibi pazaryerlerinde ise şu an yalnızca fiyatları okuyabiliyoruz — orada bir kural tetiklendiğinde fiyatı değiştirmez, sana uyarı gönderir ve öneriyi onay kuyruğuna bırakır."
+                : "On your own store (Shopify, WooCommerce) your rules really can change a price. On marketplaces like Trendyol, Hepsiburada and n11 we can currently only read prices — a rule that fires there won't change anything, it alerts you and leaves the suggestion in your approval queue."}
             </p>
             <Link
               href="/approvals"

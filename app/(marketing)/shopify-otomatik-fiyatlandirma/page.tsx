@@ -93,8 +93,8 @@ const content: SeoLandingContent = {
     {
       q: { tr: "WooCommerce için de çalışıyor mu?", en: "Does it work for WooCommerce too?" },
       a: {
-        tr: "Evet, WooCommerce de çift yönlü çalışır: katalog çekme ve fiyat geri yazma desteklenir. Amazon, Trendyol, Hepsiburada ve n11 tarafında ise şu an yalnızca fiyat okuyabiliyoruz.",
-        en: "Yes, WooCommerce is also two-way: catalog pull and price write-back are both supported. On Amazon, Trendyol, Hepsiburada and n11 we can currently only read prices.",
+        tr: "Evet, WooCommerce de çift yönlü çalışır: katalog çekme ve fiyat geri yazma desteklenir. Trendyol, Hepsiburada ve n11 tarafında ise şu an yalnızca fiyat okuyabiliyoruz.",
+        en: "Yes, WooCommerce is also two-way: catalog pull and price write-back are both supported. On Trendyol, Hepsiburada and n11 we can currently only read prices.",
       },
     },
   ],

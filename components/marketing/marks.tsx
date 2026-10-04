@@ -14,7 +14,6 @@ import { formatPrice } from "@/lib/utils";
 const BRAND_GLYPHS: Record<string, React.ReactNode> = {
   Shopify: <path d="M4 8 l6 -2 l6 2 l2 11 h-16 z M9 6 a3 3 0 0 1 6 0" />,
   WooCommerce: <path d="M3 6 h18 v9 h-11 l-4 4 v-4 h-3 z M8 10 l1.5 3 l1.5 -3 M13 10 l1.5 3 l1.5 -3" />,
-  Amazon: <path d="M4 15 c5 4 11 4 16 0 M9 4 h4 a3 3 0 0 1 0 6 h-2 a3 3 0 0 0 0 6 h4" />,
   Trendyol: <path d="M4 7 h16 l-2 12 h-12 z M9 4 l3 3 l3 -3" />,
   Hepsiburada: <path d="M5 8 h14 l-1 12 h-12 z M9 8 v-2 a3 3 0 0 1 6 0 v2 M10 12 v5 M14 12 v5 M10 14.5 h4" />,
   n11: <path d="M4 6 h16 v12 h-16 z M7.5 15 v-3.5 a2 2 0 0 1 4 0 v3.5 M14 10 l1 -1 v6 M17 10 l1 -1 v6" />,

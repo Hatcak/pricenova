@@ -618,18 +618,6 @@ export const marketplaces: Marketplace[] = [
     region: { tr: "Kendi mağazan", en: "Your own store" },
   },
   {
-    key: "amazon",
-    name: "Amazon",
-    status: "available",
-    capability: { tr: "Katalog çekme — fiyat geri yazma yok", en: "Catalog pull — no price write-back" },
-    writeBack: false,
-    products: 16,
-    winRate: 31,
-    lastSync: "2026-06-14T07:10:00Z",
-    color: "var(--color-comp-3)",
-    region: { tr: "Pazaryeri", en: "Marketplace" },
-  },
-  {
     key: "trendyol",
     name: "Trendyol",
     status: "soon",

@@ -102,7 +102,6 @@ const INTEGRATIONS: Integration[] = [
   { name: "Trendyol", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
   { name: "Hepsiburada", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
   { name: "n11", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
-  { name: "Amazon", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
   { name: "Slack", role: { tr: "Uyarılar", en: "Alerts" } },
   { name: "E-posta", icon: Mail, role: { tr: "Uyarılar ve özetler", en: "Alerts and digests" } },
   { name: "ERP", icon: Database, role: { tr: "Stok ve maliyet senkronu", en: "Stock and cost sync" }, soon: true },

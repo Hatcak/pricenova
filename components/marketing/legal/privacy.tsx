@@ -73,7 +73,7 @@ const DOC: LegalDoc = {
         {
           list: [
             { tr: "Ödeme kartı bilgilerinizi sunucularımızda saklamayız.", en: "We don't store payment card details on our servers." },
-            { tr: "Pazaryeri hesaplarınızın (Trendyol, Hepsiburada, n11, Amazon) şifrelerini istemeyiz.", en: "We don't ask for your marketplace account passwords (Trendyol, Hepsiburada, n11, Amazon)." },
+            { tr: "Pazaryeri hesaplarınızın (Trendyol, Hepsiburada, n11) şifrelerini istemeyiz.", en: "We don't ask for your marketplace account passwords (Trendyol, Hepsiburada, n11)." },
             { tr: "Rakiplerinizin size kapalı verilerine erişmeyiz; giriş gerektiren sayfaları okumayız.", en: "We don't access data your competitors keep private, and we don't read pages that require a login." },
             { tr: "Mağazanızın müşterilerine ait kişisel verileri (alıcı adı, adresi, siparişi) çekmeyiz.", en: "We don't pull personal data about your store's customers (buyer names, addresses, orders)." },
             { tr: "Reklam, analiz ya da takip çerezi kullanmayız.", en: "We use no advertising, analytics or tracking cookies." },

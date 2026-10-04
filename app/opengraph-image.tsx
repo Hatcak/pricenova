@@ -34,7 +34,7 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.1 }}>Rakip fiyat takibi</div>
           <div style={{ fontSize: 34, color: "#475569" }}>
-            Shopify · WooCommerce · Amazon · Trendyol · Hepsiburada · n11
+            Shopify · WooCommerce · Trendyol · Hepsiburada · n11
           </div>
         </div>
         <div style={{ display: "flex", fontSize: 28, color: "#1d4ed8", fontWeight: 600 }}>pricenova.io</div>
