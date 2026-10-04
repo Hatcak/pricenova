@@ -3,25 +3,23 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Barcode,
+  BellRing,
   Check,
+  Code2,
+  Database,
   FlaskConical,
-  Handshake,
+  History,
+  LockKeyhole,
+  Mail,
   Minus,
-  MousePointerClick,
-  OctagonX,
   Plus,
-  Quote,
-  SearchCheck,
-  Tags,
-  Undo2,
+  Radar,
+  WandSparkles,
 } from "lucide-react";
 import appConfig from "@/app.config";
-import { Icon } from "@/components/ui/icon";
 import { FlowDemo } from "@/components/marketing/flow-demo";
-import { ProductPreview, CompanyMark } from "@/components/marketing/marks";
+import { BrandGlyph, ProductPreview } from "@/components/marketing/marks";
 import { Reviews } from "@/components/marketing/reviews";
-import { ProductTour } from "@/components/marketing/product-tour";
 import { useLang } from "@/components/i18n/language-provider";
 import { cn } from "@/lib/utils";
 import type { L } from "@/lib/i18n/config";
@@ -29,163 +27,95 @@ import { TRIAL_DAYS } from "@/lib/trial";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Homepage copy that doesn't belong in app.config.ts. Everything is { tr, en }.
-   House rules for editing: no em dashes, no invented numbers or customers, and
-   nothing on this page may promise a feature that isn't built.
+   House rules for editing: no invented numbers or customers, and nothing on
+   this page may promise a feature that isn't built. Unbuilt things carry a
+   "Yakında" tag.
+
+   Order: hero → interactive example → 3 features → integrations → social
+   proof → pricing → FAQ → CTA. Keep each section short; technical detail
+   (stack, API) lives on /gelistiriciler, not here.
    ───────────────────────────────────────────────────────────────────────────── */
 
-/** Platforms PriceNova connects to. Real product names, not customers. */
-const PLATFORMS = ["Shopify", "WooCommerce", "Amazon", "Trendyol", "Hepsiburada", "n11", "Slack"];
+/** Turkish VAT rate used to show the VAT-inclusive price next to the list price. */
+const KDV_RATE = 0.2;
 
-const HOW_STEPS: { icon: string; title: L; body: L }[] = [
+const FEATURES: { icon: typeof Radar; title: L; body: L }[] = [
   {
-    icon: "package-plus",
-    title: { tr: "Ürünlerini ekle", en: "Add your products" },
-    body: { tr: "Kataloğunu Shopify ya da WooCommerce'ten içe aktar, ya da SKU ve maliyetlerle elle ekle.", en: "Import your catalog from Shopify or WooCommerce, or add SKUs and costs by hand." },
-  },
-  {
-    icon: "radar",
-    title: { tr: "Rakipleri eşleştir", en: "Match competitors" },
-    body: { tr: "Barkod ve model koduna göre eşleştirme önerileri gelir; emin olmadıklarımızı sen onaylarsın.", en: "Match suggestions arrive by barcode and model code; you approve the ones we're unsure of." },
-  },
-  {
-    icon: "activity",
-    title: { tr: "İzle", en: "Monitor" },
-    body: { tr: "PriceNova fiyatları paketinin sıklığında tarar; geride kaldığında ya da bir rakip indirdiğinde uyarır.", en: "PriceNova scans at your plan's frequency and alerts you when you fall behind or a rival cuts." },
-  },
-  {
-    icon: "wand-sparkles",
-    title: { tr: "Fiyatlandır", en: "Reprice" },
-    body: { tr: "Kuralın devreye girer ve yeni fiyatı mağazana yazar (Shopify, WooCommerce). Taban ve tavan sınırının dışına çıkmaz.", en: "Your rule fires and writes the new price to your store (Shopify, WooCommerce), never outside your floor and ceiling." },
-  },
-];
-
-/**
- * The four ways a competitor listing gets tied to one of your products, in the
- * order we try them. Only the third one is a guess, and it's the only one that
- * waits for a human.
- */
-const MATCH_LADDER: { key: string; icon: typeof Barcode; title: L; body: L; certainty: L; needsYou?: boolean }[] = [
-  {
-    key: "gtin",
-    icon: Barcode,
-    title: { tr: "Barkod", en: "Barcode" },
-    body: { tr: "İki ilanda da aynı barkod (GTIN/EAN) varsa bu aynı üründür. Tartışmaya gerek yok.", en: "If both listings carry the same barcode (GTIN/EAN), it's the same product. Nothing to debate." },
-    certainty: { tr: "Kesin", en: "Certain" },
-  },
-  {
-    key: "model",
-    icon: Tags,
-    title: { tr: "Marka + model kodu", en: "Brand + model code" },
-    body: { tr: "Barkod yoksa üreticinin model koduna bakarız. Renk ve beden varyantlarını ayrı tutarız.", en: "With no barcode we look for the manufacturer's model code, keeping colour and size variants apart." },
-    certainty: { tr: "Çok güçlü", en: "Very strong" },
-  },
-  {
-    key: "title",
-    icon: SearchCheck,
-    title: { tr: "Ürün adı benzerliği", en: "Title similarity" },
-    body: { tr: "Son çare: ad, varyant ve fiyat aralığı karşılaştırılır. Yanılabilir, bu yüzden doğrudan uygulanmaz.", en: "Last resort: title, variant and price range are compared. It can be wrong, so it's never applied directly." },
-    certainty: { tr: "Onayını bekler", en: "Waits for your approval" },
-    needsYou: true,
-  },
-  {
-    key: "manual",
-    icon: MousePointerClick,
-    title: { tr: "Senin elinle", en: "By your own hand" },
-    body: { tr: "Rakip ürünün bağlantısını kendin yapıştırırsın. Hiçbir şey tahmin edilmez.", en: "You paste the rival's product link yourself. Nothing is guessed." },
-    certainty: { tr: "Kesin", en: "Certain" },
-  },
-];
-
-/** The three brakes on automatic repricing. */
-const SAFETY: { icon: typeof Handshake; title: L; body: L }[] = [
-  {
-    icon: Handshake,
-    title: { tr: "Önce bana sor", en: "Ask me first" },
+    icon: Radar,
+    title: { tr: "Rakip fiyat takibi", en: "Competitor price tracking" },
     body: {
-      tr: "Her kuralı \"önce öner, ben onaylayayım\" moduna alabilirsin. PriceNova önerisini yeni kâr marjınla birlikte onay kuyruğuna bırakır; sen onaylamadan hiçbir şey değişmez.",
-      en: "Any rule can suggest instead of act. PriceNova leaves its proposal in your approval queue with the margin it would leave you, and nothing changes until you say yes.",
+      tr: "Planına göre günde birkaç kezden dakikada bire kadar: fiyat, stok ve kargo. Ürünler barkod ve model koduyla eşleşir, emin olunmayanı sen onaylarsın.",
+      en: "From a few times a day up to every minute, depending on your plan: price, stock and shipping. Products match on barcode and model code; you approve anything uncertain.",
     },
   },
   {
-    icon: Undo2,
-    title: { tr: "Tek tıkla eski fiyat", en: "One click back" },
+    icon: BellRing,
+    title: { tr: "Anında uyarı", en: "Instant alerts" },
     body: {
-      tr: "Otomatik yapılan her değişiklikte önceki fiyat saklanır. Bir hata fark edersen tek tek ya da hepsini birden geri alırsın.",
-      en: "Every automatic change keeps the price it replaced. Spot a mistake and restore it, one at a time or all at once.",
+      tr: "Rakibin fiyat düşürdüğünde veya fiyat avantajını kaybettiğinde e-posta ve Slack'e haber gelir. Fiyat geçmişi grafikle saklanır.",
+      en: "An email and Slack alert when a rival cuts a price or you lose your price advantage. Price history is kept and charted.",
     },
   },
   {
-    icon: OctagonX,
+    icon: WandSparkles,
+    title: { tr: "Otomatik fiyatlandırma", en: "Automatic repricing" },
+    body: {
+      tr: "\"En düşüğü %1 geç, maliyet +%10'un altına inme\" gibi kurallar yaz; yeni fiyat Shopify ya da WooCommerce mağazana yazılır.",
+      en: "Write rules like \"beat the lowest by 1%, never below cost +10%\"; the new price is written to your Shopify or WooCommerce store.",
+    },
+  },
+];
+
+/** Safety controls around automatic repricing. `soon` = on the roadmap, not built. */
+const SAFETY: { title: L; body: L; soon?: boolean }[] = [
+  {
+    title: { tr: "Önce öneri olarak göster", en: "Suggest first" },
+    body: { tr: "Manuel onay modu: kural fiyatı değiştirmez, onay kuyruğuna yeni marjıyla birlikte öneri bırakır.", en: "Manual approval mode: the rule leaves a suggestion with its new margin instead of changing the price." },
+  },
+  {
+    title: { tr: "Taban ve tavan fiyat", en: "Floor and ceiling" },
+    body: { tr: "Hiçbir kural belirlediğin sınırın dışına çıkamaz; rakip tabanının altına inerse takip etmez, haber verir.", en: "No rule can leave your limits; if a rival dives under your floor it doesn't follow, it tells you." },
+  },
+  {
+    title: { tr: "Günlük değişiklik sınırı", en: "Daily change cap" },
+    body: { tr: "Bir günde yapılabilecek otomatik fiyat değişikliği sayısını sen belirlersin.", en: "You set how many automatic price changes can happen in a day." },
+  },
+  {
+    title: { tr: "Değişiklik geçmişi ve geri alma", en: "Change log and undo" },
+    body: { tr: "Her değişiklik eski ve yeni fiyatıyla kayıtlıdır; tek tıkla geri alırsın.", en: "Every change is logged with its old and new price; undo it in one click." },
+  },
+  {
     title: { tr: "Her şeyi durdur", en: "Stop everything" },
-    body: {
-      tr: "Panelin üst barında, her ekranda duran bir durdurma düğmesi. Bastığın an hiçbir kural fiyatına dokunamaz; takip ve uyarılar çalışmaya devam eder.",
-      en: "A stop button in the top bar of every screen. Press it and no rule can touch a price; tracking and alerts keep running.",
-    },
+    body: { tr: "Her ekrandaki düğmeyle fiyat yazımı anında durur; takip ve uyarılar sürer.", en: "A button on every screen halts price writing at once; tracking and alerts keep running." },
+  },
+  {
+    title: { tr: "Günde en fazla %X değişim", en: "Max X% change per day" },
+    body: { tr: "Bir ürünün fiyatının bir günde en fazla yüzde kaç oynayabileceğine sınır.", en: "A cap on how far, in percent, a product's price can move in one day." },
+    soon: true,
   },
 ];
 
-/**
- * Typical ways the product is used. These are illustrations of the product,
- * not customer stories, and the section says so on screen. No names, no
- * results we can't back up.
- */
-const SCENARIOS: { icon: string; who: L; situation: L; setup: L; outcome: L }[] = [
-  {
-    icon: "store",
-    who: { tr: "Pazaryeri satıcısı", en: "Marketplace seller" },
-    situation: { tr: "Trendyol ve Hepsiburada'da 200 ürün satıyor. Aynı ürünü satan onlarca satıcı var.", en: "Sells 200 products on Trendyol and Hepsiburada, with dozens of sellers on the same listings." },
-    setup: { tr: "Her ürün için en ucuz rakibi izliyor; en ucuz konumu kaybedince e-posta uyarısı alıyor.", en: "Watches the cheapest rival on each product and gets an email when the cheapest spot is lost." },
-    outcome: { tr: "Pazaryerinde fiyatı yine kendisi giriyor, ama ne zaman ve ne kadar değiştireceğini artık tahmin etmiyor.", en: "Still enters marketplace prices by hand, but no longer guesses when or by how much." },
-  },
-  {
-    icon: "shopping-cart",
-    who: { tr: "Kendi markasını satan mağaza", en: "Brand with its own store" },
-    situation: { tr: "Shopify'da kendi sitesinden satıyor. Birkaç büyük rakip sık sık kampanya yapıyor.", en: "Sells from its own Shopify site. A few large rivals run frequent campaigns." },
-    setup: { tr: "\"En düşüğü %1 geç\" kuralı, maliyet +%15 tabanıyla, otomatik uygula modunda.", en: "A \"beat lowest by 1%\" rule with a cost +15% floor, set to apply automatically." },
-    outcome: { tr: "Rakip indirdiğinde fiyat tabanın altına inmeden güncelleniyor. Taban delinirse kural durup haber veriyor.", en: "When a rival cuts, the price updates without crossing the floor. If the floor would break, the rule stops and says so." },
-  },
-  {
-    icon: "package",
-    who: { tr: "Geniş kataloglu distribütör", en: "Distributor with a large catalog" },
-    situation: { tr: "Yedek parça gibi birbirine çok benzeyen binlerce ürün satıyor.", en: "Sells thousands of near-identical products, like spare parts." },
-    setup: { tr: "Eşleştirme barkodla yapılıyor; bütün kurallar \"önce bana sor\" modunda.", en: "Matching runs on barcodes; every rule is on \"ask me first\"." },
-    outcome: { tr: "Sabahları onay kuyruğundaki önerileri yeni marjıyla birlikte görüyor, onaylıyor ya da reddediyor.", en: "Each morning reviews the suggestions in the approval queue with their new margin, and approves or rejects them." },
-  },
+type Integration = { name: string; icon?: typeof Mail; role: L; soon?: boolean; href?: string };
+const INTEGRATIONS: Integration[] = [
+  { name: "Shopify", role: { tr: "Katalog + fiyat yazma", en: "Catalog + price write-back" } },
+  { name: "WooCommerce", role: { tr: "Katalog + fiyat yazma", en: "Catalog + price write-back" } },
+  { name: "Trendyol", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
+  { name: "Hepsiburada", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
+  { name: "n11", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
+  { name: "Amazon", role: { tr: "Rakip fiyat takibi", en: "Rival price tracking" } },
+  { name: "Slack", role: { tr: "Uyarılar", en: "Alerts" } },
+  { name: "E-posta", icon: Mail, role: { tr: "Uyarılar ve özetler", en: "Alerts and digests" } },
+  { name: "ERP", icon: Database, role: { tr: "Stok ve maliyet senkronu", en: "Stock and cost sync" }, soon: true },
+  { name: "API & Webhooks", icon: Code2, role: { tr: "Geliştiriciler için", en: "For developers" }, soon: true, href: "/gelistiriciler" },
 ];
 
-/**
- * Comparison table, grouped by the job being done. Every PriceNova value is a
- * feature shown elsewhere on this page; keep it that way when editing.
- * `true` = check, `false` = dash, text = a concrete answer.
- */
-type CompareValue = boolean | L;
-type CompareRow = { feature: L; hint: L; manual: CompareValue; sheets: CompareValue; pw: CompareValue };
-const COMPARE_GROUPS: { title: L; rows: CompareRow[] }[] = [
-  {
-    title: { tr: "Veriyi toplamak", en: "Collecting the data" },
-    rows: [
-      { feature: { tr: "Rakip fiyatlarını toplama", en: "Collecting rival prices" }, hint: { tr: "Her rakip sayfası, her ürün için", en: "Every rival page, for every product" }, manual: { tr: "Sekme sekme", en: "Tab by tab" }, sheets: { tr: "Kopyala-yapıştır", en: "Copy-paste" }, pw: { tr: "Otomatik, dakikada bire kadar", en: "Automatic, up to every minute" } },
-      { feature: { tr: "Doğru ürünü eşleştirme", en: "Matching the right product" }, hint: { tr: "Aksesuar ya da farklı varyant karışmasın", en: "No accessories or wrong variants" }, manual: { tr: "Göz kararı", en: "By eye" }, sheets: { tr: "Göz kararı", en: "By eye" }, pw: { tr: "Barkod + model kodu", en: "Barcode + model code" } },
-      { feature: { tr: "Fiyat geçmişi", en: "Price history" }, hint: { tr: "Kim, ne zaman, ne kadar indirdi", en: "Who cut, when, and by how much" }, manual: false, sheets: { tr: "Elle tutulursa", en: "If you log it" }, pw: { tr: "Grafikli", en: "Charted" } },
-    ],
-  },
-  {
-    title: { tr: "Harekete geçmek", en: "Acting on it" },
-    rows: [
-      { feature: { tr: "Geride kalınca uyarı", en: "Alert when you're undercut" }, hint: { tr: "Rakip indirim yaptığı an", en: "The moment a rival cuts" }, manual: false, sheets: false, pw: { tr: "E-posta + Slack", en: "Email + Slack" } },
-      { feature: { tr: "Otomatik yeniden fiyatlandırma", en: "Automatic repricing" }, hint: { tr: "Senin kurallarınla", en: "Within your rules" }, manual: false, sheets: false, pw: true },
-      { feature: { tr: "Yeni fiyatı mağazaya yazma", en: "Writing the new price to your store" }, hint: { tr: "Tek tek güncellemeden", en: "Without editing prices one by one" }, manual: { tr: "Tek tek", en: "One by one" }, sheets: { tr: "Tek tek", en: "One by one" }, pw: { tr: "Shopify · WooCommerce", en: "Shopify · WooCommerce" } },
-    ],
-  },
-  {
-    title: { tr: "Kontrolü elde tutmak", en: "Staying in control" },
-    rows: [
-      { feature: { tr: "Marj koruması", en: "Margin protection" }, hint: { tr: "Zararına satışı engeller", en: "Stops you selling at a loss" }, manual: { tr: "Akılda", en: "In your head" }, sheets: { tr: "Formülle", en: "With a formula" }, pw: { tr: "Taban + tavan kuralı", en: "Floor + ceiling rule" } },
-      { feature: { tr: "Önce bana sor modu", en: "Ask-me-first mode" }, hint: { tr: "Değişiklik onayınla uygulanır", en: "Changes wait for your approval" }, manual: false, sheets: false, pw: true },
-      { feature: { tr: "Hatalı değişikliği geri alma", en: "Undoing a bad change" }, hint: { tr: "Yanlış kural, yanlış fiyat", en: "Wrong rule, wrong price" }, manual: { tr: "Hatırlarsan", en: "If you remember" }, sheets: { tr: "Hatırlarsan", en: "If you remember" }, pw: { tr: "Tek tıkla", en: "One click" } },
-    ],
-  },
-];
+/** "₺1.990" → "₺2.388" (VAT included). Returns null for anything that isn't a lira amount. */
+function withKdv(price: string): string | null {
+  if (!price.startsWith("₺")) return null;
+  const n = Number(price.replace(/[^\d]/g, ""));
+  if (!n) return null;
+  return `₺${Math.round(n * (1 + KDV_RATE)).toLocaleString("tr-TR")}`;
+}
 
 /* ── Small shared pieces ─────────────────────────────────────────────────────── */
 
@@ -222,6 +152,12 @@ function DemoCta({ label, sub }: { label: string; sub: string }) {
   );
 }
 
+function SoonTag({ tr }: { tr: boolean }) {
+  return (
+    <span className="rounded-full border border-border px-2 py-0.5 text-xs font-medium text-muted-foreground">{tr ? "Yakında" : "Soon"}</span>
+  );
+}
+
 /* ── Page ────────────────────────────────────────────────────────────────────── */
 
 export function Landing() {
@@ -229,30 +165,39 @@ export function Landing() {
   const m = appConfig.marketing;
   const tr = lang === "tr";
 
-  const signupSub = tr ? `${TRIAL_DAYS} gün ücretsiz · kart istemiyoruz` : `Free for ${TRIAL_DAYS} days · no card`;
-  const demoSub = tr ? "Örnek mağaza · kayıt gerekmez" : "Sample store · no signup";
+  const signupSub = tr ? "Kart istemiyoruz · istediğin an bırak" : "No card · stop any time";
+  // Two different offers: say plainly the demo never turns into a paid account.
+  const demoSub = tr ? "Ücretli hesap oluşturmaz · kayıt yok" : "Never creates a paid account · no signup";
+  const lowest = m.pricing[0];
+
+  const ctas = (
+    <div className="grid gap-3 sm:max-w-lg sm:grid-cols-2">
+      <PrimaryCta label={t(m.heroCtaPrimary)} sub={signupSub} />
+      <DemoCta label={t(m.heroCtaSecondary)} sub={demoSub} />
+    </div>
+  );
 
   return (
     <>
       {/* ── 1. HERO ─────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10" style={{ background: "var(--grad-hero)" }} aria-hidden />
-        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] items-center gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground">
+            <p className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden />
-              {t(m.badge)}
+              {tr ? `${TRIAL_DAYS} gün ücretsiz deneme · kart gerekmez` : `${TRIAL_DAYS}-day free trial · no card needed`}
             </p>
             <h1 className="mt-5 max-w-xl font-display text-4xl font-bold tracking-tight text-balance sm:text-5xl sm:leading-[1.1]">
               {t(m.heroTitle)} <span className="text-primary">{t(m.heroAccent)}</span>
             </h1>
             <p className="mt-5 max-w-prose text-lg leading-relaxed text-muted-foreground text-pretty">{t(m.heroSubtitle)}</p>
-
-            {/* Two doors, deliberately different: an account of your own, or the sample workspace without one. */}
-            <div className="mt-8 grid gap-3 sm:max-w-lg sm:grid-cols-2">
-              <PrimaryCta label={t(m.heroCtaPrimary)} sub={signupSub} />
-              <DemoCta label={t(m.heroCtaSecondary)} sub={demoSub} />
-            </div>
+            <div className="mt-8">{ctas}</div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              {tr
+                ? <>Planlar <span className="tnum font-semibold text-foreground">{t(lowest.price)}</span>/ay + KDV&apos;den başlar · aylık faturalandırılır</>
+                : <>Plans from <span className="tnum font-semibold text-foreground">{t(lowest.price)}</span>/mo · billed monthly</>}
+            </p>
           </div>
 
           <figure>
@@ -269,382 +214,232 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ── 2. PLATFORMS ────────────────────────────────────────────── */}
-      <section aria-labelledby="platforms-title" className="border-y border-border bg-muted">
-        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-          <h2 id="platforms-title" className="text-center text-sm font-medium text-muted-foreground">
-            {tr
-              ? "Bu platformlardaki ürünlerini izler, uyarıları e-posta ve Slack'e gönderir"
-              : "Watches your products on these platforms and sends alerts to email and Slack"}
-          </h2>
-          <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 sm:gap-x-10">
-            {PLATFORMS.map((p) => (
-              <li key={p}>
-                <CompanyMark name={p} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ── 3. SCENARIO ─────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-        <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-12 lg:grid-cols-2">
-          <div>
-            <SectionHead
-              center={false}
-              eyebrow={tr ? "Nasıl işler" : "In action"}
-              title={tr ? "Bir rakip fiyat düşürünce ne olur?" : "What happens when a rival drops a price?"}
-              sub={
-                tr
-                  ? "Rakip indirir, sen en ucuz olmaktan çıkarsın, kuralın devreye girer ve konumunu geri alırsın. Sağdaki canlandırma örnek mağaza verisiyle çalışır; bir adıma tıklayarak durdurabilirsin."
-                  : "A rival cuts, you stop being cheapest, your rule fires and you win the spot back. The walkthrough on the right runs on sample store data; click any step to stop it there."
-              }
-            />
-          </div>
+      {/* ── 2. INTERACTIVE EXAMPLE ──────────────────────────────────── */}
+      <section id="how" className="scroll-mt-20 border-y border-border bg-muted">
+        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)] items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2">
+          <SectionHead
+            center={false}
+            eyebrow={tr ? "Canlı örnek" : "Live example"}
+            title={tr ? "Bir rakip fiyat düşürünce ne olur?" : "What happens when a rival cuts a price?"}
+            sub={
+              tr
+                ? "Rakip indirir, en ucuz olmaktan çıkarsın, kuralın devreye girer ve konumunu geri alırsın. Örnek mağaza verisiyle çalışır; bir adıma tıklayıp durdurabilirsin."
+                : "A rival cuts, you stop being cheapest, your rule fires and you win the spot back. Runs on sample store data; click any step to stop there."
+            }
+          />
           <FlowDemo />
         </div>
       </section>
 
-      {/* ── SCREEN TOUR ─────────────────────────────────────────────── */}
-      <ProductTour />
-
-      {/* ── 4. FEATURES ─────────────────────────────────────────────── */}
-      <section id="features" className="scroll-mt-20 border-t border-border bg-muted">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <SectionHead
-            title={tr ? "Takipten fiyatlandırmaya, tek panel" : "From tracking to repricing, one panel"}
-            sub={tr ? "Rakip fiyatını bilmek, geride kaldığını fark etmek ve buna göre davranmak için gerekenler." : "What it takes to know rival prices, notice when you fall behind, and act on it."}
-          />
-          <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {m.features.map((f) => (
-              <li key={f.title.en} className="rounded-2xl border border-border bg-card p-6">
-                <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <Icon name={f.icon} className="h-5 w-5" />
-                </span>
-                <h3 className="mt-4 text-lg font-semibold tracking-tight">{t(f.title)}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(f.body)}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ── 5. MATCHING ─────────────────────────────────────────────── */}
-      <section id="matching" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
-        <SectionHead
-          eyebrow={tr ? "Eşleştirme" : "Matching"}
-          title={tr ? "Doğru ürünü doğru rakiple karşılaştırırız" : "The right product, compared with the right rival"}
-          sub={
-            tr
-              ? "Yanlış eşleşme, ona dayanan her fiyat kararını bozar. Bu yüzden dört yöntemi sırayla deneriz ve tahmine dayananı sana sormadan kullanmayız."
-              : "A wrong match corrupts every pricing decision built on it. So we try four methods in order, and never use a guess without asking you."
-          }
-        />
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {MATCH_LADDER.map((step, i) => (
-            <li key={step.key} className={cn("rounded-2xl border bg-card p-5", step.needsYou ? "border-warning" : "border-border")}>
-              <div className="flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <step.icon className="h-5 w-5" aria-hidden />
-                </span>
-                <span className="tnum text-xs font-bold text-muted-foreground">{`0${i + 1}`}</span>
-              </div>
-              <h3 className="mt-4 font-semibold tracking-tight">{t(step.title)}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(step.body)}</p>
-              <span
-                className={cn(
-                  "mt-3 inline-block rounded-full px-2.5 py-1 text-xs font-semibold",
-                  step.needsYou ? "bg-warning/10 text-warning" : "bg-success/10 text-success",
-                )}
-              >
-                {t(step.certainty)}
+      {/* ── 3. THREE FEATURES + SAFETY ──────────────────────────────── */}
+      <section id="features" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-16 sm:px-6">
+        <SectionHead title={tr ? "Takip et, haberin olsun, fiyatla" : "Track, get alerted, reprice"} />
+        <ul className="mt-10 grid gap-5 md:grid-cols-3">
+          {FEATURES.map((f) => (
+            <li key={f.title.en} className="rounded-2xl border border-border bg-card p-6">
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                <f.icon className="h-5 w-5" aria-hidden />
               </span>
+              <h3 className="mt-4 text-lg font-semibold tracking-tight">{t(f.title)}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(f.body)}</p>
             </li>
           ))}
-        </ol>
-      </section>
+        </ul>
 
-      {/* ── 6. CONTROL ──────────────────────────────────────────────── */}
-      <section id="control" className="scroll-mt-20 border-t border-border bg-muted">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <SectionHead
-            eyebrow={tr ? "Kontrol" : "Control"}
-            title={tr ? "Son söz her zaman sende" : "You always have the last word"}
-            sub={
-              tr
-                ? "Otomatik fiyatlandırmayı açmak kontrolü devretmek demek değil. Üç güvenlik düğmesi her zaman elinin altında."
-                : "Turning on automatic repricing doesn't mean handing over the keys. Three safety controls are always within reach."
-            }
-          />
-          <ul className="mt-12 grid gap-5 md:grid-cols-3">
+        <div id="control" className="mt-5 scroll-mt-20 rounded-2xl border border-primary/30 bg-primary/5 p-6 sm:p-8">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary text-primary-foreground">
+              <History className="h-5 w-5" aria-hidden />
+            </span>
+            <div>
+              <h3 className="text-lg font-semibold tracking-tight">{tr ? "Otomatik ama kontrolsüz değil" : "Automatic, never unchecked"}</h3>
+              <p className="text-sm text-muted-foreground">{tr ? "Fiyatına dokunan her şeyin freni sende." : "You hold the brakes on anything that touches your price."}</p>
+            </div>
+          </div>
+          <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
             {SAFETY.map((s) => (
-              <li key={s.title.en} className="rounded-2xl border border-border bg-card p-6">
-                <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <s.icon className="h-5 w-5" aria-hidden />
+              <li key={s.title.en} className="flex items-start gap-3">
+                {s.soon ? (
+                  <Minus className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                ) : (
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" strokeWidth={3} aria-hidden />
+                )}
+                <span className="text-sm leading-relaxed">
+                  <span className="flex flex-wrap items-center gap-2 font-medium">
+                    {t(s.title)} {s.soon && <SoonTag tr={tr} />}
+                  </span>
+                  <span className="text-muted-foreground">{t(s.body)}</span>
                 </span>
-                <h3 className="mt-4 text-lg font-semibold tracking-tight">{t(s.title)}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(s.body)}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* ── 7. HOW IT WORKS ─────────────────────────────────────────── */}
-      <section id="how" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6">
-        <SectionHead
-          title={tr ? "Dört adımda başla" : "Up and running in four steps"}
-          sub={tr ? "Ekle, eşleştir, izle, fiyatlandır." : "Add, match, monitor, reprice."}
-        />
-        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {HOW_STEPS.map((s, i) => (
-            <li key={s.title.en} className="rounded-2xl border border-border bg-card p-6">
-              <div className="flex items-center justify-between">
-                <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                  <Icon name={s.icon} className="h-5 w-5" />
-                </span>
-                <span className="tnum text-2xl font-bold text-muted-foreground" aria-hidden>{`0${i + 1}`}</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold tracking-tight">{t(s.title)}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{t(s.body)}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* ── 8. USAGE SCENARIOS (+ real customer stories, once there are any) ── */}
-      <section className="border-t border-border bg-muted">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      {/* ── 4. INTEGRATIONS ─────────────────────────────────────────── */}
+      <section id="integrations" className="scroll-mt-20 border-y border-border bg-muted">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <SectionHead
-            eyebrow={tr ? "Örnek kullanım" : "Example setups"}
-            title={tr ? "PriceNova'yı kimler, nasıl kullanır?" : "Who uses PriceNova, and how?"}
+            title={tr ? "Kullandığın sistemlerle çalışır" : "Works with the tools you use"}
             sub={
               tr
-                ? "Bunlar müşteri hikâyesi değil; ürünün tipik kullanım biçimleri. Sana en yakın olanı demo panelinde deneyebilirsin."
-                : "These aren't customer stories; they're typical ways the product is set up. Try the one closest to you in the demo panel."
+                ? "Mağazanı bağla, pazaryerlerindeki rakiplerini izle. PriceNova rakibin fiyat düşürdüğünde veya fiyat avantajını kaybettiğinde seni uyarır."
+                : "Connect your store and watch your rivals on the marketplaces. PriceNova alerts you when a rival cuts a price or you lose your price advantage."
             }
           />
-          <ul className="mt-12 grid gap-5 lg:grid-cols-3">
-            {SCENARIOS.map((s) => (
-              <li key={s.who.en} className="flex flex-col rounded-2xl border border-border bg-card p-6">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <Icon name={s.icon} className="h-5 w-5" />
+          <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {INTEGRATIONS.map((i) => {
+              const body = (
+                <>
+                  <span className="flex items-center gap-2">
+                    {i.icon ? <i.icon className="h-5 w-5 shrink-0 text-primary" aria-hidden /> : <BrandGlyph name={i.name} className="h-5 w-5 shrink-0 text-primary" />}
+                    <span className="font-semibold tracking-tight">{i.name}</span>
                   </span>
-                  <h3 className="text-lg font-semibold tracking-tight">{t(s.who)}</h3>
-                </div>
-                <dl className="mt-5 space-y-4 text-sm leading-relaxed">
-                  <div>
-                    <dt className="label-mono text-muted-foreground">{tr ? "Durum" : "Situation"}</dt>
-                    <dd className="mt-1">{t(s.situation)}</dd>
-                  </div>
-                  <div>
-                    <dt className="label-mono text-muted-foreground">{tr ? "Ayar" : "Setup"}</dt>
-                    <dd className="mt-1">{t(s.setup)}</dd>
-                  </div>
-                  <div>
-                    <dt className="label-mono text-primary">{tr ? "Sonuç" : "Outcome"}</dt>
-                    <dd className="mt-1">{t(s.outcome)}</dd>
-                  </div>
-                </dl>
-              </li>
-            ))}
-          </ul>
-
-          {m.caseStudies.length > 0 && (
-            <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {m.caseStudies.map((cs) => (
-                <li key={cs.brand}>
-                  <figure className="flex h-full flex-col rounded-2xl border border-border bg-card p-6">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="font-display font-bold tracking-tight">{cs.brand}</span>
-                      <span className="tnum rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">{t(cs.result)}</span>
-                    </div>
-                    <Quote className="mt-5 h-5 w-5 text-primary" aria-hidden />
-                    <blockquote className="mt-3 flex-1 text-sm leading-relaxed">{t(cs.quote)}</blockquote>
-                    <figcaption className="mt-5 border-t border-border pt-4 text-sm">
-                      <span className="font-semibold">{cs.author}</span>
-                      <span className="text-muted-foreground"> · {t(cs.role)} · {cs.brand}</span>
-                    </figcaption>
-                  </figure>
+                  <span className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+                    {t(i.role)} {i.soon && <SoonTag tr={tr} />}
+                  </span>
+                </>
+              );
+              return (
+                <li key={i.name}>
+                  {i.href ? (
+                    <Link href={i.href} className="flex h-full min-h-11 flex-col rounded-xl border border-dashed border-border bg-card p-4 transition-colors hover:border-primary">
+                      {body}
+                    </Link>
+                  ) : (
+                    <div className={cn("flex h-full flex-col rounded-xl border bg-card p-4", i.soon ? "border-dashed border-border" : "border-border")}>{body}</div>
+                  )}
                 </li>
-              ))}
-            </ul>
-          )}
+              );
+            })}
+          </ul>
         </div>
       </section>
 
-      {/* ── REVIEWS (hidden until there are real ones) ──────────────── */}
-      <Reviews reviews={m.reviews} />
-
-      {/* ── 9. COMPARISON ───────────────────────────────────────────── */}
-      <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6">
-        <SectionHead
-          title={tr ? "Neden PriceNova?" : "Why PriceNova?"}
-          sub={tr ? "Rakip fiyatını takip etmenin üç yolu, yan yana." : "Three ways to keep up with rival prices, side by side."}
-        />
-        <div className="mt-12 overflow-hidden rounded-2xl border border-border bg-card">
-          {/* Phones: one card per row so the PriceNova answer is never off-screen. */}
-          <div className="sm:hidden">
-            {COMPARE_GROUPS.map((group) => (
-              <div key={group.title.en}>
-                <h3 className="label-mono border-b border-border bg-muted px-4 py-2 text-muted-foreground">{t(group.title)}</h3>
-                {group.rows.map((row) => (
-                  <div key={row.feature.en} className="border-b border-border px-4 py-4">
-                    <p className="font-medium">{t(row.feature)}</p>
-                    <p className="mt-0.5 text-sm text-muted-foreground">{t(row.hint)}</p>
-                    <dl className="mt-3 grid grid-cols-[1fr_1fr_1.4fr] gap-2 text-center">
-                      <div className="rounded-lg bg-muted px-1.5 py-2">
-                        <dt className="text-xs text-muted-foreground">{tr ? "Elle" : "Manual"}</dt>
-                        <dd className="mt-1"><CompareMark value={row.manual} tr={tr} /></dd>
-                      </div>
-                      <div className="rounded-lg bg-muted px-1.5 py-2">
-                        <dt className="text-xs text-muted-foreground">{tr ? "Tablo" : "Sheets"}</dt>
-                        <dd className="mt-1"><CompareMark value={row.sheets} tr={tr} /></dd>
-                      </div>
-                      <div className="rounded-lg bg-primary/10 px-1.5 py-2">
-                        <dt className="text-xs font-semibold text-primary">{appConfig.name}</dt>
-                        <dd className="mt-1"><CompareMark value={row.pw} tr={tr} highlight /></dd>
-                      </div>
-                    </dl>
-                  </div>
-                ))}
-              </div>
-            ))}
+      {/* ── 5. SOCIAL PROOF (real reviews once there are any; until then, why we don't name customers) ── */}
+      {m.reviews.length > 0 ? (
+        <Reviews reviews={m.reviews} />
+      ) : (
+        <section aria-labelledby="privacy-title" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="mx-auto flex max-w-3xl flex-col gap-4 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-start">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <LockKeyhole className="h-5 w-5" aria-hidden />
+            </span>
+            <div>
+              <h2 id="privacy-title" className="font-semibold tracking-tight">
+                {tr ? "Müşteri yorumları ve gizlilik" : "Customer reviews and privacy"}
+              </h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                {tr
+                  ? "Fiyat stratejisi bir mağazanın en hassas bilgisidir ve bu sayfayı rakipleri de okuyabilir. Bu yüzden müşterilerimizin adlarını, mağazalarını ve yorumlarını izinleri olmadan paylaşmıyoruz. Kendin görmek için ücretsiz demoyu aç."
+                  : "Pricing strategy is a store's most sensitive information, and their competitors can read this page too. So we don't share customer names, stores or reviews without permission. Open the free demo to see for yourself."}
+              </p>
+            </div>
           </div>
+        </section>
+      )}
 
-          <div className="hidden overflow-x-auto sm:block">
-            <table className="w-full min-w-[36rem] text-sm">
-              <caption className="sr-only">{tr ? "Rakip fiyat takibinin üç yolu" : "Three ways to track rival prices"}</caption>
-              <thead>
-                <tr className="border-b border-border">
-                  <th scope="col" className="w-[34%] px-5 py-4 text-left">
-                    <span className="sr-only">{tr ? "Özellik" : "Feature"}</span>
-                  </th>
-                  <th scope="col" className="w-[20%] px-4 py-4 text-center align-bottom">
-                    <span className="block font-semibold">{tr ? "Elle kontrol" : "Manual checking"}</span>
-                    <span className="mt-0.5 block text-xs font-normal text-muted-foreground">{tr ? "Tarayıcı sekmeleri" : "Browser tabs"}</span>
-                  </th>
-                  <th scope="col" className="w-[20%] px-4 py-4 text-center align-bottom">
-                    <span className="block font-semibold">{tr ? "Tablolar" : "Spreadsheets"}</span>
-                    <span className="mt-0.5 block text-xs font-normal text-muted-foreground">Excel · Sheets</span>
-                  </th>
-                  <th scope="col" className="w-[26%] border-t-2 border-t-primary bg-primary/10 px-4 py-4 text-center align-bottom">
-                    <span className="block font-semibold text-primary">{appConfig.name}</span>
-                    <span className="mt-0.5 block text-xs font-normal text-primary">{tr ? "Otomatik" : "Automatic"}</span>
-                  </th>
-                </tr>
-              </thead>
-              {COMPARE_GROUPS.map((group) => (
-                <tbody key={group.title.en}>
-                  <tr className="border-b border-border bg-muted">
-                    <th scope="colgroup" colSpan={4} className="px-5 py-2 text-left">
-                      <span className="label-mono text-muted-foreground">{t(group.title)}</span>
-                    </th>
-                  </tr>
-                  {group.rows.map((row) => (
-                    <tr key={row.feature.en} className="border-b border-border">
-                      <th scope="row" className="px-5 py-3.5 text-left font-normal">
-                        <span className="block font-medium">{t(row.feature)}</span>
-                        <span className="mt-0.5 block text-xs text-muted-foreground">{t(row.hint)}</span>
-                      </th>
-                      <td className="px-4 py-3.5 text-center"><CompareMark value={row.manual} tr={tr} /></td>
-                      <td className="px-4 py-3.5 text-center"><CompareMark value={row.sheets} tr={tr} /></td>
-                      <td className="bg-primary/10 px-4 py-3.5 text-center"><CompareMark value={row.pw} tr={tr} highlight /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              ))}
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 10. PRICING ─────────────────────────────────────────────── */}
+      {/* ── 6. PRICING ──────────────────────────────────────────────── */}
       <section id="pricing" className="scroll-mt-20 border-t border-border bg-muted">
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
           <SectionHead
             title={tr ? "Ürün sayısına göre basit fiyat" : "Simple pricing by product count"}
-            sub={tr ? "Sadece izlediğin ürünler için ödersin." : "You only pay for the products you track."}
+            sub={
+              tr
+                ? `Her plan ${TRIAL_DAYS} gün ücretsiz başlar. Kart istemiyoruz; süre dolunca otomatik ücret alınmaz.`
+                : `Every plan starts with ${TRIAL_DAYS} free days. No card; nothing is charged automatically when it ends.`
+            }
           />
-          <ul className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+
+          <ul className="mt-10 grid gap-5 lg:grid-cols-3">
+            {m.pricing.map((tier) => {
+              const inclusive = tr ? withKdv(tier.price.tr) : null;
+              return (
+                <li
+                  key={tier.name}
+                  className={cn(
+                    "flex flex-col rounded-2xl border bg-card p-7",
+                    tier.featured ? "border-primary shadow-pop ring-1 ring-primary" : "border-border",
+                  )}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="text-lg font-semibold tracking-tight">{tier.name}</h3>
+                    {tier.featured && (
+                      <span className="rounded-full bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground">
+                        {tr ? "Önerilen" : "Recommended"}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-3 flex items-baseline gap-1">
+                    <span className="tnum text-4xl font-bold tracking-tight">{t(tier.price)}</span>
+                    {tier.period && <span className="text-sm text-muted-foreground">{t(tier.period)}</span>}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {inclusive ? (
+                      <>
+                        KDV dahil <span className="tnum font-semibold text-foreground">{inclusive}</span>/ay · aylık faturalandırılır
+                      </>
+                    ) : tr ? (
+                      "Aylık faturalandırılır"
+                    ) : (
+                      "Billed monthly · taxes may apply"
+                    )}
+                  </p>
+                  <p className="mt-3 text-sm text-muted-foreground">{t(tier.tagline)}</p>
+                  <ul className="mt-6 flex-1 space-y-3 text-sm">
+                    {tier.features.map((f) => (
+                      <li key={f.en} className="flex items-start gap-2.5">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" strokeWidth={3} aria-hidden />
+                        {t(f)}
+                      </li>
+                    ))}
+                    {tier.soon?.map((f) => (
+                      <li key={f.en} className="flex items-start gap-2.5 text-muted-foreground">
+                        <Minus className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+                        <span>
+                          {t(f)} <SoonTag tr={tr} />
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/signup"
+                    className={cn(
+                      "mt-7 inline-flex h-12 items-center justify-center rounded-xl text-sm font-semibold transition-opacity",
+                      tier.featured
+                        ? "bg-primary text-primary-foreground hover:opacity-90"
+                        : "border border-border bg-card hover:bg-muted",
+                    )}
+                  >
+                    {t(tier.cta)}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          {/* Billing facts, stated once, where the decision is made. */}
+          <ul className="mx-auto mt-8 grid max-w-4xl gap-x-8 gap-y-2 text-sm text-muted-foreground sm:grid-cols-2">
             {[
-              { tr: `${TRIAL_DAYS} gün ücretsiz, tüm özellikler açık`, en: `Free for ${TRIAL_DAYS} days, every feature on` },
-              { tr: "Kart istemiyoruz", en: "No card needed" },
-              { tr: "Süre dolunca panel kilitlenir, verilerin silinmez", en: "When it ends the panel locks; nothing is deleted" },
+              { tr: "Fiyatlar Türk lirasıdır, %20 KDV hariçtir; KDV dahil tutar her planın altında yazar.", en: "Prices in USD; local taxes may apply." },
+              { tr: "Aylık peşin faturalandırılır, faturan şirketin adına kesilir.", en: "Billed monthly in advance, invoiced to your company." },
+              { tr: "İstediğin an iptal edersin; iptal dönem sonunda geçerli olur.", en: "Cancel any time; it takes effect at the end of the period." },
+              { tr: "Deneme bitince panel kilitlenir, verilerin silinmez.", en: "When the trial ends the panel locks; nothing is deleted." },
             ].map((p) => (
-              <li key={p.en} className="inline-flex items-center gap-1.5">
-                <Check className="h-4 w-4 shrink-0 text-primary" strokeWidth={3} aria-hidden />
+              <li key={p.en} className="flex items-start gap-2">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={3} aria-hidden />
                 {t(p)}
               </li>
             ))}
           </ul>
-
-          <ul className="mt-10 grid gap-5 lg:grid-cols-3">
-            {m.pricing.map((tier) => (
-              <li
-                key={tier.name}
-                className={cn(
-                  "flex flex-col rounded-2xl border bg-card p-7",
-                  tier.featured ? "border-primary shadow-pop ring-1 ring-primary" : "border-border",
-                )}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-lg font-semibold tracking-tight">{tier.name}</h3>
-                  {tier.featured && (
-                    <span className="rounded-full bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground">
-                      {tr ? "Önerilen" : "Recommended"}
-                    </span>
-                  )}
-                </div>
-                <p className="mt-3 flex items-baseline gap-1">
-                  <span className="tnum text-4xl font-bold tracking-tight">{t(tier.price)}</span>
-                  {tier.period && <span className="text-sm text-muted-foreground">{t(tier.period)}</span>}
-                </p>
-                <p className="mt-1.5 text-sm text-muted-foreground">{t(tier.tagline)}</p>
-                <ul className="mt-6 flex-1 space-y-3 text-sm">
-                  {tier.features.map((f) => (
-                    <li key={f.en} className="flex items-start gap-2.5">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" strokeWidth={3} aria-hidden />
-                      {t(f)}
-                    </li>
-                  ))}
-                  {tier.soon?.map((f) => (
-                    <li key={f.en} className="flex items-start gap-2.5 text-muted-foreground">
-                      <Minus className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                      <span>
-                        {t(f)}{" "}
-                        <span className="ml-1 rounded-full border border-border px-2 py-0.5 text-xs font-medium">
-                          {tr ? "Yakında" : "Soon"}
-                        </span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/signup"
-                  className={cn(
-                    "mt-7 inline-flex h-12 items-center justify-center rounded-xl text-sm font-semibold transition-opacity",
-                    tier.featured
-                      ? "bg-primary text-primary-foreground hover:opacity-90"
-                      : "border border-border bg-card hover:bg-muted",
-                  )}
-                >
-                  {t(tier.cta)}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          {tr && <p className="mt-6 text-center text-sm text-muted-foreground">TL fiyatlara KDV dahil değildir.</p>}
         </div>
       </section>
 
-      {/* ── 11. FAQ ─────────────────────────────────────────────────── */}
-      <section id="faq" className="mx-auto max-w-3xl scroll-mt-20 px-4 py-20 sm:px-6">
+      {/* ── 7. FAQ ──────────────────────────────────────────────────── */}
+      <section id="faq" className="mx-auto max-w-3xl scroll-mt-20 px-4 py-16 sm:px-6">
         <SectionHead
           title={tr ? "Sıkça sorulanlar" : "Frequently asked"}
-          sub={tr ? `Cevabını bulamazsan hello@${appConfig.domain} adresine yaz.` : `Can't find your answer? Write to hello@${appConfig.domain}.`}
+          sub={tr ? `Cevabını bulamazsan ${appConfig.company.emails.hello} adresine yaz.` : `Can't find your answer? Write to ${appConfig.company.emails.hello}.`}
         />
         <div className="mt-10 space-y-3">
           {m.faq.map((f) => (
@@ -662,49 +457,23 @@ export function Landing() {
         </div>
       </section>
 
-      {/* ── 12. FINAL CTA ───────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-card px-6 py-16 text-center sm:px-8">
+      {/* ── 8. CTA ──────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-card px-6 py-12 sm:px-10">
           <div className="pointer-events-none absolute inset-0" style={{ background: "var(--grad-hero)" }} aria-hidden />
-          <div className="relative">
-            <h2 className="mx-auto max-w-2xl font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-              {tr ? "Fiyat kararını tahminle değil, veriyle ver." : "Make pricing calls on data, not guesses."}
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-              {tr
-                ? "Örnek mağazayla hemen dene ya da kendi ürünlerinle ücretsiz başla."
-                : "Try it on the sample store right now, or start free with your own products."}
-            </p>
-            <div className="mx-auto mt-8 grid max-w-lg gap-3 sm:grid-cols-2">
-              <PrimaryCta label={t(m.heroCtaPrimary)} sub={signupSub} />
-              <DemoCta label={t(m.heroCtaSecondary)} sub={demoSub} />
+          <div className="relative flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 className="font-display text-2xl font-bold tracking-tight text-balance sm:text-3xl">
+                {tr ? "Fiyat kararını tahminle değil, veriyle ver." : "Make pricing calls on data, not guesses."}
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                {tr ? `${TRIAL_DAYS} gün ücretsiz, kart istemiyoruz.` : `${TRIAL_DAYS} days free, no card.`}
+              </p>
             </div>
+            <div className="w-full lg:w-auto lg:min-w-[30rem]">{ctas}</div>
           </div>
         </div>
       </section>
     </>
-  );
-}
-
-/** The check / dash / text inside a comparison cell, shared by the table and the phone cards. */
-function CompareMark({ value, tr, highlight = false }: { value: CompareValue; tr: boolean; highlight?: boolean }) {
-  if (typeof value === "boolean") {
-    return value ? (
-      <span className={cn("mx-auto grid h-6 w-6 place-items-center rounded-full", highlight ? "bg-primary text-primary-foreground" : "bg-success/10 text-success")}>
-        <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
-        <span className="sr-only">{tr ? "Var" : "Yes"}</span>
-      </span>
-    ) : (
-      <span className="mx-auto grid h-6 w-6 place-items-center rounded-full bg-muted text-muted-foreground">
-        <Minus className="h-3.5 w-3.5" aria-hidden />
-        <span className="sr-only">{tr ? "Yok" : "No"}</span>
-      </span>
-    );
-  }
-  const text = tr ? value.tr : value.en;
-  return highlight ? (
-    <span className="text-sm font-semibold leading-snug text-primary [overflow-wrap:anywhere]">{text}</span>
-  ) : (
-    <span className="text-sm leading-snug text-muted-foreground">{text}</span>
   );
 }

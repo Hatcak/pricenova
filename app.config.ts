@@ -113,6 +113,37 @@ export interface Integration {
   purpose: string;
 }
 
+/**
+ * The legal entity behind the product. The legal pages (privacy, terms, KVKK,
+ * retention, security), the about/contact pages and the footer all read from
+ * here. Fill in only what is true; an empty field renders as a visible
+ * "[...]" placeholder and keeps the "company details missing" notice on the
+ * legal pages, so an unfinished policy can never pass for a finished one.
+ */
+export interface Company {
+  /** Registered trade name, e.g. "PriceNova Yazılım Teknolojileri A.Ş." */
+  legalName: string;
+  /** Registered address, one line. */
+  address: string;
+  /** MERSİS number (16 digits). */
+  mersisNo: string;
+  taxOffice: string;
+  taxNumber: string;
+  /** KEP address; KVKK applications may be sent here. */
+  kep: string;
+  /** Optional. Leave empty to show email only. */
+  phone: string;
+  /** Courts that handle disputes under the terms, e.g. "İstanbul (Çağlayan)". */
+  jurisdiction: string;
+  /** Where the database is hosted, e.g. { tr: "AB (Frankfurt, Almanya)", en: "EU (Frankfurt, Germany)" }. */
+  dataRegion: L | null;
+  /** Who serves the web app, e.g. "Vercel Inc.". */
+  hostingProvider: string;
+  /** How long database backups are kept before they roll off, in days (see your Supabase plan). */
+  backupRetentionDays: number | null;
+  emails: { hello: string; privacy: string; security: string; careers: string };
+}
+
 export interface AppConfig {
   name: string;
   tagline: L;
@@ -120,6 +151,7 @@ export interface AppConfig {
   domain: string;
   logoText: string;
   accentName: string;
+  company: Company;
   marketing: {
     badge: L;
     heroTitle: L;
@@ -155,6 +187,27 @@ export const appConfig: AppConfig = {
   logoText: "PN",
   accentName: "green-purple-turquoise",
 
+  /** Fill these in before going live. See the Company interface. */
+  company: {
+    legalName: "",
+    address: "",
+    mersisNo: "",
+    taxOffice: "",
+    taxNumber: "",
+    kep: "",
+    phone: "",
+    jurisdiction: "",
+    dataRegion: null,
+    hostingProvider: "",
+    backupRetentionDays: null,
+    emails: {
+      hello: "hello@pricenova.io",
+      privacy: "privacy@pricenova.io",
+      security: "security@pricenova.io",
+      careers: "careers@pricenova.io",
+    },
+  },
+
   marketing: {
     badge: { tr: "E-ticaret fiyat takibi", en: "E-commerce price tracking" },
     heroTitle: {
@@ -166,16 +219,16 @@ export const appConfig: AppConfig = {
       en: "know it first.",
     },
     heroSubtitle: {
-      tr: "PriceNova rakiplerinin fiyatını, stokunu ve kargosunu paketine göre günde birkaç kez ya da dakikada bir kontrol eder. Geride kaldığında seni uyarır; istersen belirlediğin sınırlar içinde fiyatını kendisi günceller.",
-      en: "PriceNova checks your rivals' price, stock and shipping a few times a day or once a minute, depending on your plan. It alerts you when you fall behind and, if you want, updates your price itself within the limits you set.",
+      tr: "Planına göre günde birkaç kezden dakikalık takibe kadar rakip fiyatlarını izle. PriceNova rakibin fiyat düşürdüğünde veya fiyat avantajını kaybettiğinde seni uyarır; istersen belirlediğin sınırlar içinde fiyatını kendisi günceller.",
+      en: "Track rival prices from a few times a day up to every minute, depending on your plan. PriceNova alerts you when a rival cuts a price or you lose your price advantage and, if you want, updates your price within the limits you set.",
     },
     /**
      * Two different doors, and the labels say which is which: the primary one
      * creates an account, the secondary one opens the sample workspace with no
      * signup at all. Keep them distinguishable if you reword them.
      */
-    heroCtaPrimary: { tr: "Ücretsiz dene", en: "Try it free" },
-    heroCtaSecondary: { tr: "Demo panelini aç", en: "Open the demo panel" },
+    heroCtaPrimary: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" },
+    heroCtaSecondary: { tr: "Ücretsiz demo", en: "Free demo" },
     features: [
       { icon: "radar", title: { tr: "Rakip takibi", en: "Competitor tracking" }, body: { tr: "Paketine göre günde birkaç kez ya da dakikada bir kontrol edilir: fiyat, stok ve kargo dahil.", en: "Depending on your plan, checked a few times a day or once a minute: price, stock and shipping included." } },
       { icon: "bell-ring", title: { tr: "Fiyat uyarıları", en: "Price alerts" }, body: { tr: "Bir rakip fiyat düşürdüğünde ya da sen en ucuz olmaktan çıktığında e-posta ve Slack'e anında bildirim.", en: "Get an instant email and Slack alert when a rival drops a price or you stop being the cheapest." } },
@@ -193,7 +246,7 @@ export const appConfig: AppConfig = {
     stats: [
       { value: "6", label: { tr: "mağaza & pazaryeri", en: "stores & marketplaces" } },
       { value: "1 dk", label: { tr: "en sık fiyat kontrolü", en: "fastest price check" } },
-      { value: "3 gün", label: { tr: "ücretsiz deneme", en: "free trial" } },
+      { value: "14 gün", label: { tr: "ücretsiz deneme", en: "free trial" } },
       { value: "2", label: { tr: "uyarı kanalı", en: "alert channels" } },
     ],
     /**
@@ -211,9 +264,9 @@ export const appConfig: AppConfig = {
      * rendered muted with a "Yakında" tag and is not part of what the price buys.
      */
     pricing: [
-      { name: "Starter", price: { tr: "₺1.990", en: "$49" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "3 gün ücretsiz dene", en: "Try free for 3 days" } },
-      { name: "Growth", price: { tr: "₺5.990", en: "$149" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "3 gün ücretsiz dene", en: "Try free for 3 days" }, featured: true },
-      { name: "Scale", price: { tr: "₺9.990", en: "$259" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada bir tarama", en: "Per-minute scans" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], soon: [{ tr: "API erişimi", en: "API access" }], cta: { tr: "3 gün ücretsiz dene", en: "Try free for 3 days" } },
+      { name: "Starter", price: { tr: "₺1.990", en: "$49" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" } },
+      { name: "Growth", price: { tr: "₺5.990", en: "$149" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" }, featured: true },
+      { name: "Scale", price: { tr: "₺9.990", en: "$259" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada bir tarama", en: "Per-minute scans" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], soon: [{ tr: "API erişimi", en: "API access" }], cta: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" } },
     ],
     /**
      * Written for the person deciding whether to trust us with their prices,
@@ -274,8 +327,8 @@ export const appConfig: AppConfig = {
       {
         q: { tr: "Denemek için kayıt olmam veya kart girmem gerekiyor mu?", en: "Do I need to sign up or enter a card to try it?" },
         a: {
-          tr: "Hayır. \"Demo panelini aç\" dersen örnek bir mağazanın ürünleri, rakipleri ve fiyat geçmişiyle dolu paneli anında görürsün: kayıt yok, kart yok, kurulum yok. Kendi ürünlerinle denemeye hazır olduğunda hesap açarsın: 3 gün boyunca tüm özellikler ücretsiz, yine kart istemiyoruz. Süre dolunca panel kilitlenir ama verilerin silinmez; bir paket seçtiğinde kaldığın yerden devam edersin.",
-          en: "No. \"Open the demo panel\" drops you straight into a workspace filled with a sample store's products, rivals and price history: no signup, no card, no setup. When you're ready to try it with your own products you create an account. Every feature is free for 3 days, and we still don't ask for a card. When the trial ends the panel locks but nothing is deleted; pick a plan and you carry on where you left off.",
+          tr: "Hayır. \"Ücretsiz demo\" düğmesine basarsan örnek bir mağazanın ürünleri, rakipleri ve fiyat geçmişiyle dolu paneli anında görürsün: kayıt yok, kart yok, kurulum yok. Kendi ürünlerinle denemeye hazır olduğunda hesap açarsın: 14 gün boyunca tüm özellikler ücretsiz, yine kart istemiyoruz. Süre dolunca panel kilitlenir ama verilerin silinmez; bir paket seçtiğinde kaldığın yerden devam edersin.",
+          en: "No. \"Free demo\" drops you straight into a workspace filled with a sample store's products, rivals and price history: no signup, no card, no setup. When you're ready to try it with your own products you create an account. Every feature is free for 14 days, and we still don't ask for a card. When the trial ends the panel locks but nothing is deleted; pick a plan and you carry on where you left off.",
         },
       },
       {

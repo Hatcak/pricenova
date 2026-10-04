@@ -12,10 +12,10 @@ import type { User } from "@supabase/supabase-js";
  * grant themselves a plan from the browser. Swap this check for your billing
  * provider's subscription status once one is wired.
  *
- * Marketing copy says "3 gün" / "3-day" in a few places — keep them in step
+ * Marketing copy says "14 gün" / "14-day" in a few places — keep them in step
  * if you change this number.
  */
-export const TRIAL_DAYS = 3;
+export const TRIAL_DAYS = 14;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 

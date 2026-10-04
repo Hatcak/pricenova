@@ -256,6 +256,24 @@ export function AuthScreen({
                   {isLogin ? ui.signIn : ui.createAccount}
                   {!loading && <ArrowRight className="h-4 w-4" />}
                 </Button>
+
+                {!isLogin && (
+                  <p className="text-center text-[12px] leading-relaxed text-muted-foreground">
+                    {lang === "tr" ? (
+                      <>
+                        Hesap oluşturarak <LegalLink href="/kullanim-sartlari">Kullanım Şartları</LegalLink>&apos;nı kabul etmiş olursun.
+                        Verilerinin nasıl işlendiği <LegalLink href="/gizlilik">Gizlilik Politikası</LegalLink> ve{" "}
+                        <LegalLink href="/kvkk">KVKK Aydınlatma Metni</LegalLink>&apos;nde.
+                      </>
+                    ) : (
+                      <>
+                        By creating an account you agree to the <LegalLink href="/kullanim-sartlari">Terms of Service</LegalLink>.
+                        How your data is handled is set out in the <LegalLink href="/gizlilik">Privacy Policy</LegalLink> and the{" "}
+                        <LegalLink href="/kvkk">KVKK / GDPR Notice</LegalLink>.
+                      </>
+                    )}
+                  </p>
+                )}
               </form>
             </>
           )}
@@ -321,5 +339,14 @@ function GoogleGlyph() {
       <path fill="#FBBC05" d="M5.84 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.66-2.84Z" />
       <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.05l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z" />
     </svg>
+  );
+}
+
+/** Opens in a new tab so a half-filled signup form isn't lost. */
+function LegalLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link href={href} target="_blank" className="font-medium text-foreground underline underline-offset-2 hover:text-primary">
+      {children}
+    </Link>
   );
 }

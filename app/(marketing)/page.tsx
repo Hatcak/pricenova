@@ -5,7 +5,7 @@ import { openGraph } from "@/lib/seo";
 
 const title = `${appConfig.name} · Rakip fiyat takibi ve otomatik fiyatlandırma`;
 const description =
-  "Trendyol, Hepsiburada, n11, Amazon, Shopify ve WooCommerce'teki rakip fiyatlarını izle, geride kaldığında uyarı al, kendi kurallarınla fiyatını güncelle. 3 gün ücretsiz, kart istemiyoruz.";
+  "Trendyol, Hepsiburada, n11, Amazon, Shopify ve WooCommerce'teki rakip fiyatlarını izle, geride kaldığında uyarı al, kendi kurallarınla fiyatını güncelle. 14 gün ücretsiz, kart istemiyoruz.";
 
 export const metadata: Metadata = {
   title: { absolute: title },

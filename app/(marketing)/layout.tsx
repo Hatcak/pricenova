@@ -6,6 +6,8 @@ import appConfig from "@/app.config";
 import { Logo, LogoMark } from "@/components/ui/logo";
 import { LanguageToggle } from "@/components/ui/language-toggle";
 import { useLang } from "@/components/i18n/language-provider";
+import { LEGAL_LINKS } from "@/components/marketing/legal-page";
+import { companyName } from "@/lib/company";
 
 /** Close the mobile <details> menu once a link inside it is used. */
 function closeMenu(e: React.MouseEvent<HTMLElement>) {
@@ -15,12 +17,11 @@ function closeMenu(e: React.MouseEvent<HTMLElement>) {
 export default function MarketingLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { ui, lang } = useLang();
+  const { ui, t, lang } = useLang();
 
   const sections = [
     { label: ui.features, href: "/#features" },
-    { label: ui.howItWorks, href: "/#how" },
-    { label: ui.matching, href: "/#matching" },
+    { label: lang === "tr" ? "Entegrasyonlar" : "Integrations", href: "/#integrations" },
     { label: ui.pricing, href: "/#pricing" },
     { label: ui.faq, href: "/#faq" },
   ];
@@ -41,7 +42,7 @@ export default function MarketingLayout({
             <Logo />
           </Link>
 
-          <nav aria-label={lang === "tr" ? "Ana menü" : "Main"} className="ml-8 hidden items-center gap-1 lg:flex">
+          <nav aria-label={lang === "tr" ? "Ana menü" : "Main"} className="ml-8 hidden items-center gap-1 xl:flex">
             {sections.map((s) => (
               <Link
                 key={s.href}
@@ -67,7 +68,7 @@ export default function MarketingLayout({
               className="hidden h-11 items-center gap-2 rounded-lg border border-border bg-card px-4 text-sm font-semibold transition-colors hover:bg-muted sm:inline-flex"
             >
               <FlaskConical className="h-4 w-4 text-primary" aria-hidden />
-              Demo
+              {ui.openDemo}
             </Link>
             <Link
               href="/signup"
@@ -77,7 +78,7 @@ export default function MarketingLayout({
             </Link>
 
             {/* Phones and tablets: everything the desktop header shows, in one menu. */}
-            <details className="group relative lg:hidden">
+            <details className="group relative xl:hidden">
               <summary
                 className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-lg border border-border bg-card [&::-webkit-details-marker]:hidden"
                 aria-label={lang === "tr" ? "Menü" : "Menu"}
@@ -141,18 +142,11 @@ export default function MarketingLayout({
                 title={lang === "tr" ? "Ürün" : "Product"}
                 links={[
                   { label: ui.features, href: "/#features" },
-                  { label: ui.howItWorks, href: "/#how" },
-                  { label: ui.matching, href: "/#matching" },
-                  { label: lang === "tr" ? "Kontrol & güvenlik" : "Control & safety", href: "/#control" },
                   { label: ui.pricing, href: "/#pricing" },
-                ]}
-              />
-              <FooterCol
-                title={lang === "tr" ? "Başla" : "Get going"}
-                links={[
-                  { label: ui.tryFree, href: "/signup" },
+                  { label: lang === "tr" ? "Entegrasyonlar" : "Integrations", href: "/#integrations" },
+                  { label: lang === "tr" ? "Geliştiriciler" : "Developers", href: "/gelistiriciler" },
+                  { label: ui.faq, href: "/#faq" },
                   { label: ui.openDemo, href: "/demo" },
-                  { label: ui.signIn, href: "/login" },
                 ]}
               />
               <FooterCol
@@ -166,22 +160,29 @@ export default function MarketingLayout({
                 ]}
               />
               <FooterCol
-                title={lang === "tr" ? "Yardım" : "Help"}
+                title={lang === "tr" ? "Şirket" : "Company"}
                 links={[
-                  { label: ui.faq, href: "/#faq" },
-                  { label: lang === "tr" ? "Gizlilik" : "Privacy", href: "/gizlilik" },
-                  { label: lang === "tr" ? "Bize yazın" : "Email us", href: `mailto:hello@${appConfig.domain}` },
+                  { label: lang === "tr" ? "Hakkımızda" : "About", href: "/hakkimizda" },
+                  { label: "Blog", href: "/blog" },
+                  { label: lang === "tr" ? "Kariyer" : "Careers", href: "/kariyer" },
+                  { label: lang === "tr" ? "İletişim" : "Contact", href: "/iletisim" },
                 ]}
+              />
+              <FooterCol
+                title={lang === "tr" ? "Yasal" : "Legal"}
+                links={LEGAL_LINKS.map((l) => ({ label: t(l.label), href: l.href }))}
               />
             </div>
           </div>
           <div className="mt-10 flex flex-col items-center gap-4 border-t border-border pt-6 sm:flex-row">
-            <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} {appConfig.name} · {appConfig.domain}
+            <p className="text-center text-xs text-muted-foreground sm:text-left">
+              © {new Date().getFullYear()} {companyName}
+              {appConfig.company.mersisNo && <> · MERSİS {appConfig.company.mersisNo}</>}
+              {appConfig.company.address && <> · {appConfig.company.address}</>}
             </p>
             <div className="flex items-center gap-2 sm:ml-auto">
               <a
-                href={`mailto:hello@${appConfig.domain}`}
+                href={`mailto:${appConfig.company.emails.hello}`}
                 aria-label={lang === "tr" ? "Bize e-posta gönder" : "Email us"}
                 className="grid h-11 w-11 place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >

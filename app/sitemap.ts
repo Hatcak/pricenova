@@ -42,7 +42,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
-    { url: `${base}/gizlilik`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${base}/hakkimizda`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+    { url: `${base}/gelistiriciler`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${base}/kariyer`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
+    { url: `${base}/iletisim`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    ...["gizlilik", "kullanim-sartlari", "kvkk", "veri-saklama", "guvenlik"].map((slug) => ({
+      url: `${base}/${slug}`,
+      lastModified: now,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
     { url: `${base}/login`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
     { url: `${base}/signup`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
   ];

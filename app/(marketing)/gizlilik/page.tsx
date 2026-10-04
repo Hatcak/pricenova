@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import appConfig from "@/app.config";
-import { PrivacyContent } from "@/components/marketing/privacy-content";
+import { openGraph } from "@/lib/seo";
+import { PrivacyContent } from "@/components/marketing/legal/privacy";
+
+const url = `https://${appConfig.domain}/gizlilik`;
 
 export const metadata: Metadata = {
   title: "Gizlilik Politikası",
-  description:
-    "PriceNova hangi verileri topluyor, neden topluyor, nerede saklıyor ve siz bu veriler üzerinde hangi haklara sahipsiniz.",
-  alternates: { canonical: `https://${appConfig.domain}/gizlilik` },
-  // A policy page has no business in search results for product keywords.
-  robots: { index: true, follow: true },
+  description: "PriceNova hangi verileri topluyor, neden işliyor, kimlerle paylaşıyor ve nerede saklıyor; çerezler ve haklarınız.",
+  alternates: { canonical: url },
+  openGraph: openGraph({ title: `Gizlilik Politikası | ${appConfig.name}`, description: "PriceNova hangi verileri topluyor, neden işliyor, kimlerle paylaşıyor ve nerede saklıyor; çerezler ve haklarınız.", url }),
 };
 
 export default function Page() {
