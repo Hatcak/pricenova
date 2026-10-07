@@ -101,6 +101,17 @@
   --seg-3: oklch(60% 0.2 25);
   --seg-4: oklch(56% 0.17 300);
 
+  /* Marketing-only surfaces (defined here so Tailwind generates bg-ink, bg-cta…):
+     "ink" is the deep navy used for the hero, the featured plan and the closing
+     band; "cta" is the one warm call-to-action colour. Re-pointed under `.mk`. */
+  --color-ink: #0b1120;
+  --color-ink-foreground: #f8fafc;
+  --color-ink-muted: #a5b4c8;
+  --color-ink-card: #141d33;
+  --color-ink-accent: #93c5fd;
+  --color-cta: #f97316;
+  --color-cta-foreground: #111827;
+
   /* Very subtle shadows. */
   --shadow-soft: 0 1px 2px oklch(40% 0.03 300 / 0.04), 0 4px 14px oklch(40% 0.03 300 / 0.05);
   --shadow-pop: 0 1px 2px oklch(40% 0.03 300 / 0.05), 0 10px 30px oklch(40% 0.03 300 / 0.09);
@@ -136,13 +147,18 @@
    ───────────────────────────────────────────────────────────────────────────── */
 .mk {
   color-scheme: light;
+  /* Space Grotesk + DM Sans, chosen with the ui-ux-pro-max skill. */
+  --font-sans: var(--font-mk-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-mk-display), var(--font-mk-sans), ui-sans-serif, sans-serif;
+  font-family: var(--font-sans);
+  letter-spacing: 0;
   --color-background: #ffffff;
   --color-foreground: #0f172a;
   --color-card: #ffffff;
   --color-card-foreground: #0f172a;
   --color-popover: #ffffff;
   --color-popover-foreground: #0f172a;
-  --color-muted: #f1f5f9;
+  --color-muted: #f5f7fb;
   --color-muted-foreground: #475569;
   --color-border: #e2e8f0;
   --color-input: #64748b;
@@ -201,6 +217,10 @@
     --color-mid: #94a3b8;
     --color-star: #fbbf24;
     --grad-hero: radial-gradient(110% 70% at 50% -10%, #172554 0%, #0b1120 60%);
+    --color-ink: #060a16;
+    --color-ink-card: #111a2e;
+    --color-cta: #fb923c;
+    --color-cta-foreground: #0b1120;
     --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3);
     --shadow-pop: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px rgb(0 0 0 / 0.4);
     --shadow-pill: 0 1px 2px rgb(0 0 0 / 0.3);
@@ -231,6 +251,72 @@ body:has(.mk) {
   outline: 2px solid var(--color-ring);
   outline-offset: 2px;
 }
+/* On the dark ink bands the blue ring is too dim; use the light accent. */
+.mk .bg-ink :focus-visible {
+  outline-color: var(--color-ink-accent);
+}
+
+/* ── Marketing effects (ui-ux-pro-max: glassmorphism hero + bento grid) ───── */
+
+/* Hero / closing band backdrop: soft colour glows over a faint grid. */
+.mesh {
+  background:
+    radial-gradient(60% 55% at 85% 10%, rgb(37 99 235 / 0.45) 0%, transparent 60%),
+    radial-gradient(45% 45% at 10% 90%, rgb(249 115 22 / 0.22) 0%, transparent 60%),
+    radial-gradient(40% 40% at 50% 50%, rgb(99 102 241 / 0.18) 0%, transparent 70%),
+    var(--color-ink);
+}
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 85%);
+}
+
+/* Frosted panel for content sitting on the ink backdrop. */
+.glass {
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Floating header pill. */
+.nav-glass {
+  background: color-mix(in srgb, var(--color-background) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+
+/* Cards lift a little on hover; transform only, so nothing reflows. */
+.lift {
+  transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 200ms ease, border-color 200ms ease;
+}
+@media (hover: hover) {
+  .lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-pop);
+  }
+}
+
+/* Sections fade up as they scroll into view, where the browser supports
+   scroll-driven animations. Elsewhere (and with reduced motion) they simply
+   render in place, so nothing ever stays hidden. */
+@keyframes revealUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: revealUp linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+/* Slow-moving glow behind the hero preview. */
+@keyframes glowShift { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-18px, 14px) scale(1.06); } }
+.glow-shift { animation: glowShift 14s ease-in-out infinite; }
 
 * {
   border-color: var(--color-border);
@@ -316,7 +402,8 @@ body {
 .stagger > *:nth-child(6) { animation-delay: 0.34s; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, .animate-float-up, .stagger > *, .sweep-flow, .drift, .pulse-ring { animation: none !important; }
+  *, .animate-float-up, .stagger > *, .sweep-flow, .drift, .pulse-ring, .glow-shift { animation: none !important; }
+  .lift, .lift:hover { transition: none; transform: none; }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────

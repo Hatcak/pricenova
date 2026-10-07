@@ -19,11 +19,12 @@ export default function MarketingLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const { ui, t, lang } = useLang();
 
+  // "Fiyatlar" is the header's main button, so it isn't repeated in this list.
   const sections = [
     { label: ui.features, href: "/#features" },
     { label: lang === "tr" ? "Entegrasyonlar" : "Integrations", href: "/#integrations" },
-    { label: ui.pricing, href: "/#pricing" },
     { label: ui.faq, href: "/#faq" },
+    { label: lang === "tr" ? "İletişim" : "Contact", href: "/iletisim" },
   ];
 
   return (
@@ -36,51 +37,52 @@ export default function MarketingLayout({
         {lang === "tr" ? "İçeriğe geç" : "Skip to content"}
       </a>
 
-      <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:px-6">
+      {/* Floating glass pill (ui-ux-pro-max: glassmorphism navigation). */}
+      <header className="sticky top-0 z-30 px-3 pt-3 sm:px-4">
+        <div className="nav-glass mx-auto flex h-16 max-w-6xl items-center gap-2 rounded-2xl border border-border pl-3 pr-2 shadow-soft sm:pl-4">
           <Link href="/" aria-label={`${appConfig.name}, ${lang === "tr" ? "ana sayfa" : "home"}`} className="inline-flex h-11 items-center rounded-lg">
             <Logo />
           </Link>
 
-          <nav aria-label={lang === "tr" ? "Ana menü" : "Main"} className="ml-8 hidden items-center gap-1 xl:flex">
+          <nav aria-label={lang === "tr" ? "Ana menü" : "Main"} className="ml-6 hidden items-center gap-0.5 xl:flex">
             {sections.map((s) => (
               <Link
                 key={s.href}
                 href={s.href}
-                className="inline-flex h-11 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex h-11 items-center rounded-xl px-3.5 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground"
               >
                 {s.label}
               </Link>
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-1.5">
             <LanguageToggle large className="hidden md:inline-flex" />
             <Link
               href="/login"
-              className="hidden h-11 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:inline-flex"
+              className="hidden h-11 items-center rounded-xl px-3 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground md:inline-flex"
             >
               {ui.signIn}
             </Link>
-            {/* Demo and signup are separate doors. Never collapse them into one. */}
+            {/* The demo door stays its own button, separate from the plans. */}
             <Link
               href="/demo"
-              className="hidden h-11 items-center gap-2 rounded-lg border border-border bg-card px-4 text-sm font-semibold transition-colors hover:bg-muted sm:inline-flex"
+              className="hidden h-11 items-center gap-2 rounded-xl border border-border bg-card px-4 text-sm font-semibold transition-colors duration-200 hover:bg-muted sm:inline-flex"
             >
               <FlaskConical className="h-4 w-4 text-primary" aria-hidden />
               {ui.openDemo}
             </Link>
             <Link
-              href="/signup"
-              className="inline-flex h-11 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+              href="/#pricing"
+              className="inline-flex h-11 items-center rounded-xl bg-cta px-4 text-sm font-semibold text-cta-foreground transition-[filter] duration-200 hover:brightness-95"
             >
-              {ui.tryFree}
+              {ui.pricing}
             </Link>
 
             {/* Phones and tablets: everything the desktop header shows, in one menu. */}
             <details className="group relative xl:hidden">
               <summary
-                className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-lg border border-border bg-card [&::-webkit-details-marker]:hidden"
+                className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-xl border border-border bg-card [&::-webkit-details-marker]:hidden"
                 aria-label={lang === "tr" ? "Menü" : "Menu"}
               >
                 <Menu className="h-5 w-5 group-open:hidden" aria-hidden />

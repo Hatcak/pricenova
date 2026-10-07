@@ -17,6 +17,18 @@ price-changes feed · a competitors list. All visuals are **inline SVG** (charts
 in `components/app/charts.tsx`, the price-tag-with-eye logomark in
 `components/ui/logo.tsx`) — **no chart library, no photos**.
 
+**Marketing pages (`.mk`) have their own look**, chosen with the
+`ui-ux-pro-max` skill: Space Grotesk headlines + DM Sans body, a dark "ink"
+hero and closing band (`bg-ink`, `.mesh`, `.glass`), a bento grid for features,
+the featured plan as a dark card, and one warm orange `bg-cta` colour for every
+call to action. Follows the OS theme. The dashboard keeps the description above.
+
+**Sales-led, not self-serve:** the public pages never say "ücretsiz dene". The
+header button is "Fiyatlar" (→ `/#pricing`); each plan's "Teklif al" button
+opens `/iletisim?paket=<Plan>#teklif`, the quote form, which stores requests in
+the Supabase `leads` table (`supabase/leads.sql`, insert-only RLS; read them in
+the Supabase Table Editor). The demo stays its own, separately labelled door.
+
 ## ⭐ If the user wants to set this up
 
 When the user says anything like **"set up this project"**, **"bu projeyi kur"**,

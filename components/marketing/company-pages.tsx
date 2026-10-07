@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BookOpen, Eye, FlaskConical, Handshake, KeyRound, Mail, MessageSquareText, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, Check, Eye, FlaskConical, Handshake, KeyRound, Mail, MessageSquareText, ShieldCheck } from "lucide-react";
 import appConfig from "@/app.config";
 import { CompanyCard, LEGAL_LINKS } from "@/components/marketing/legal-page";
+import { LeadForm } from "@/components/marketing/lead-form";
 import { useLang } from "@/components/i18n/language-provider";
 import type { L } from "@/lib/i18n/config";
+import type { Plan } from "@/lib/leads";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    About, blog, careers and contact. Same house rules as the homepage: no
@@ -269,7 +271,7 @@ export function CareersContent() {
 
 /* ── Contact ─────────────────────────────────────────────────────────────────── */
 
-export function ContactContent() {
+export function ContactContent({ initialPlan = "" }: { initialPlan?: Plan | "" }) {
   const { t, lang } = useLang();
   const tr = lang === "tr";
 
@@ -296,17 +298,43 @@ export function ContactContent() {
 
   return (
     <Shell>
-      <PageHead
-        eyebrow={tr ? "İletişim" : "Contact"}
-        title={tr ? "Bize ulaş" : "Get in touch"}
-        intro={
-          tr
-            ? "Her e-postayı bir insan okur ve yanıtlar. Konuna uygun adrese yazarsan daha hızlı yardımcı olabiliriz."
-            : "Every email is read and answered by a person. Writing to the right address helps us help you faster."
-        }
-      />
+      <section id="teklif" className="grid scroll-mt-24 gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-start">
+        <div className="lg:sticky lg:top-28">
+          <PageHead
+            eyebrow={tr ? "Teklif al" : "Get a quote"}
+            title={tr ? "Paketini seç, seni arayalım" : "Pick a plan, we'll call you"}
+            intro={
+              tr
+                ? "Formu doldur; ekibimiz telefonla ya da e-postayla ulaşıp mağazana hangi paketin uyduğunu birlikte netleştirsin. Formu göndermek seni hiçbir ödemeye bağlamaz."
+                : "Fill in the form and our team will reach you by phone or email to work out which plan fits your store. Sending it doesn't commit you to anything."
+            }
+          />
+          <ul className="mt-8 space-y-3 text-sm">
+            {[
+              { tr: "Fiyatlar Türk lirası, aylık faturalandırılır", en: "Prices in Turkish lira, billed monthly" },
+              { tr: "Bilgilerin yalnızca sana ulaşmak için kullanılır", en: "Your details are used only to reach you" },
+              { tr: "Önce görmek istersen demo panel kayıtsız açılır", en: "Want to look first? The demo opens without signup" },
+            ].map((p) => (
+              <li key={p.en} className="flex items-start gap-2.5">
+                <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
+                  <Check className="h-3 w-3" strokeWidth={3} aria-hidden />
+                </span>
+                {t(p)}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <LeadForm initialPlan={initialPlan} />
+      </section>
 
-      <ul className="mt-12 grid gap-5 md:grid-cols-3">
+      <h2 className="mt-20 font-display text-2xl font-bold tracking-tight">{tr ? "Diğer konular için" : "For anything else"}</h2>
+      <p className="mt-2 max-w-prose text-muted-foreground">
+        {tr
+          ? "Her e-postayı bir insan okur ve yanıtlar. Konuna uygun adrese yazarsan daha hızlı yardımcı olabiliriz."
+          : "Every email is read and answered by a person. Writing to the right address helps us help you faster."}
+      </p>
+
+      <ul className="mt-8 grid gap-5 md:grid-cols-3">
         {channels.map((c) => (
           <li key={c.address} className="flex flex-col rounded-2xl border border-border bg-card p-6">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">

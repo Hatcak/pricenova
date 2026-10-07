@@ -5,7 +5,10 @@ import type { Metadata, Viewport } from "next";
 // powers every price, delta and number. The setup can swap these — keep the CSS
 // variable names (--font-sans-app / --font-display-app / --font-mono-app) so
 // globals.css picks them up.
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+// The public marketing pages (`.mk` in globals.css) use their own pairing,
+// picked with the ui-ux-pro-max skill ("Tech Startup"): Space Grotesk for
+// headlines, DM Sans for body text. Prices stay in IBM Plex Mono everywhere.
+import { IBM_Plex_Sans, IBM_Plex_Mono, Space_Grotesk, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LanguageProvider } from "@/components/i18n/language-provider";
@@ -29,6 +32,20 @@ const display = IBM_Plex_Sans({
 
 const mono = IBM_Plex_Mono({
   variable: "--font-mono-app",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const mkDisplay = Space_Grotesk({
+  variable: "--font-mk-display",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+  weight: ["500", "600", "700"],
+});
+
+const mkSans = DM_Sans({
+  variable: "--font-mk-sans",
   subsets: ["latin", "latin-ext"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
@@ -70,7 +87,7 @@ export default function RootLayout({
        * otherwise it warns and route changes animate their scroll reset too.
        */
       data-scroll-behavior="smooth"
-      className={`${sans.variable} ${display.variable} ${mono.variable} h-full`}
+      className={`${sans.variable} ${display.variable} ${mono.variable} ${mkDisplay.variable} ${mkSans.variable} h-full`}
     >
       <body className="min-h-full bg-background text-foreground antialiased font-sans">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>

@@ -224,10 +224,10 @@ export const appConfig: AppConfig = {
     },
     /**
      * Two different doors, and the labels say which is which: the primary one
-     * creates an account, the secondary one opens the sample workspace with no
-     * signup at all. Keep them distinguishable if you reword them.
+     * leads to the plans and the quote form, the secondary one opens the sample
+     * workspace with no signup at all. Keep them distinguishable if you reword them.
      */
-    heroCtaPrimary: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" },
+    heroCtaPrimary: { tr: "Fiyatları gör", en: "See pricing" },
     heroCtaSecondary: { tr: "Ücretsiz demo", en: "Free demo" },
     features: [
       { icon: "radar", title: { tr: "Rakip takibi", en: "Competitor tracking" }, body: { tr: "Paketine göre günde birkaç kez ya da dakikada bir kontrol edilir: fiyat, stok ve kargo dahil.", en: "Depending on your plan, checked a few times a day or once a minute: price, stock and shipping included." } },
@@ -264,9 +264,9 @@ export const appConfig: AppConfig = {
      * rendered muted with a "Yakında" tag and is not part of what the price buys.
      */
     pricing: [
-      { name: "Starter", price: { tr: "₺1.990", en: "$49" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" } },
-      { name: "Growth", price: { tr: "₺5.990", en: "$149" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" }, featured: true },
-      { name: "Scale", price: { tr: "₺9.990", en: "$259" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada bir tarama", en: "Per-minute scans" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], soon: [{ tr: "API erişimi", en: "API access" }], cta: { tr: "14 gün ücretsiz dene", en: "Try free for 14 days" } },
+      { name: "Starter", price: { tr: "₺1.990", en: "$49" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "İlk kataloğunu izlemeye başla.", en: "Start watching your first catalog." }, features: [{ tr: "100 ürüne kadar", en: "Up to 100 products" }, { tr: "5 rakip / ürün", en: "5 competitors / product" }, { tr: "Günde 2 tarama", en: "2 scans per day" }, { tr: "E-posta uyarıları", en: "Email alerts" }], cta: { tr: "Teklif al", en: "Get a quote" } },
+      { name: "Growth", price: { tr: "₺5.990", en: "$149" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyüyen mağazalar için.", en: "For scaling stores." }, features: [{ tr: "2.000 ürüne kadar", en: "Up to 2,000 products" }, { tr: "Sınırsız rakip", en: "Unlimited competitors" }, { tr: "Saatlik tarama", en: "Hourly scans" }, { tr: "Otomatik yeniden fiyatlandırma", en: "Auto-repricing" }, { tr: "Slack + e-posta uyarıları", en: "Slack + email alerts" }], cta: { tr: "Teklif al", en: "Get a quote" }, featured: true },
+      { name: "Scale", price: { tr: "₺9.990", en: "$259" }, period: { tr: "/ay + KDV", en: "/mo" }, tagline: { tr: "Büyük kataloglar için.", en: "For large catalogs." }, features: [{ tr: "Growth'taki her şey", en: "Everything in Growth" }, { tr: "50.000+ ürün", en: "50,000+ products" }, { tr: "Dakikada bir tarama", en: "Per-minute scans" }, { tr: "Özel kurallar & roller", en: "Custom rules & roles" }, { tr: "Özel hesap yöneticisi", en: "Dedicated manager" }], soon: [{ tr: "API erişimi", en: "API access" }], cta: { tr: "Teklif al", en: "Get a quote" } },
     ],
     /**
      * Written for the person deciding whether to trust us with their prices,
